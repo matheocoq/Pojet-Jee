@@ -1,5 +1,5 @@
 package fr.eni.ProjetJee.bo;
 
-public class test {
+public class Retrait {
 
 }

@@ -1,15 +1,15 @@
 package fr.eni.ProjetJee.bo;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class Enchère {
 	private int noEnchère;
-	private Date dateEnchère;
+	private LocalDateTime dateEnchère;
 	private int montantEnchère;
 	private int noUtilisateur;
 	private int noArticle;
 	
-	public Enchère(int noEnchère, Date dateEnchère, int montantEnchère, int noUtilisateur, int noArticle) {
+	public Enchère(int noEnchère, LocalDateTime dateEnchère, int montantEnchère, int noUtilisateur, int noArticle) {
 		this.noEnchère = noEnchère;
 		this.dateEnchère = dateEnchère;
 		this.montantEnchère = montantEnchère;
@@ -25,11 +25,11 @@ public class Enchère {
 		this.noEnchère = noEnchère;
 	}
 
-	public Date getDateEnchère() {
+	public LocalDateTime getDateEnchère() {
 		return dateEnchère;
 	}
 
-	public void setDateEnchère(Date dateEnchère) {
+	public void setDateEnchère(LocalDateTime dateEnchère) {
 		this.dateEnchère = dateEnchère;
 	}
 

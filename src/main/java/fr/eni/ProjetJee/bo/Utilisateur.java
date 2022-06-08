@@ -181,18 +181,7 @@ public class Utilisateur {
 		return activer;
 	}
 
-	public void setActiver(boolean activer) {
-		this.activer = activer;
-	}
 
-
-	public boolean getActiver() {
-		return activer;
-	}
-
-	public void setActiver(boolean activer) {
-		this.activer = activer;
-	}
 
 
 	@Override

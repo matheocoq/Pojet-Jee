@@ -14,7 +14,7 @@ import fr.eni.ProjetJee.dal.DALException;
 
 public class CategorieDAOImpl implements CategorieDAO{
 	
-	private static final String INSERT = "insert into CATEGORIES(no_categorie,libelle) values (?, ?)";
+	private static final String INSERT = "insert into CATEGORIES(libelle) values (?)";
 	private final String selectID = "Select * from CATEGORIES where no_categorie=?";
 	private static final String ALL = "SELECT * FROM CATEGORIES";
 	private static final String UPDATE = "UPDATE CATEGORIES SET libelle=? where no_categorie=?";
@@ -25,16 +25,16 @@ public class CategorieDAOImpl implements CategorieDAO{
 	public void insert(Categorie cat) throws DALException {
 		Connection conn = null;
 		try {
-			//Récupérer une connexion
+			//Rï¿½cupï¿½rer une connexion
 			conn = ConnectionProvider.getConnection();
 
-			//Préparer la requete
+			//Prï¿½parer la requete
 			PreparedStatement stmt = conn.prepareStatement(INSERT, PreparedStatement.RETURN_GENERATED_KEYS);
-			stmt.setString(2, cat.getLibelle());
+			stmt.setString(1, cat.getLibelle());
 			//Executer la requete
 			stmt.executeUpdate();
 			
-			//Recupérer l'identifiant créé
+			//Recupï¿½rer l'identifiant crï¿½ï¿½
 			ResultSet rs = stmt.getGeneratedKeys();
 			if(rs.next()) {
 				cat.setNoCategorie(rs.getInt(1));
@@ -66,17 +66,17 @@ public class CategorieDAOImpl implements CategorieDAO{
 		PreparedStatement stmt = null;
 		
 		try {
-			//Ouverture de la connexion à la base
+			//Ouverture de la connexion ï¿½ la base
 			
 			conn = ConnectionProvider.getConnection();
 			
-			//Execution de la requête
+			//Execution de la requï¿½te
 			stmt = conn.prepareStatement(selectID);
 			stmt.setInt(1, no_categorie);
 			
 			ResultSet rs = stmt.executeQuery();
 			
-			//Traitement du résultat
+			//Traitement du rï¿½sultat
 			if (rs.next()) {
 				categorie = new Categorie(rs.getInt("no_categorie"), rs.getString("libelle"));
 			}
@@ -84,7 +84,7 @@ public class CategorieDAOImpl implements CategorieDAO{
 		} catch (SQLException e) {
 			throw new DALException("Selection par ID impossible");
 		} finally {
-			//Fermmeture de la connexion à la base
+			//Fermmeture de la connexion ï¿½ la base
 			if(conn!=null) {
 				try {
 					conn.close();
@@ -110,10 +110,10 @@ public class CategorieDAOImpl implements CategorieDAO{
 		List<Categorie> allCategories = new ArrayList<>();
 		Connection conn = null;
 		try {
-			//Récupérer une connexion
+			//Rï¿½cupï¿½rer une connexion
 			conn = ConnectionProvider.getConnection();
 
-			//Préparer la requete
+			//Prï¿½parer la requete
 			PreparedStatement stmt = conn.prepareStatement(ALL);
 			
 			
@@ -149,13 +149,13 @@ public class CategorieDAOImpl implements CategorieDAO{
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		try {
-			//Récupérer une connexion
+			//Rï¿½cupï¿½rer une connexion
 			conn = ConnectionProvider.getConnection();
 
-			//Préparer la requete
+			//Prï¿½parer la requete
 			stmt = conn.prepareStatement(ALL);
 			
-			//Execution de la requête
+			//Execution de la requï¿½te
 			stmt = conn.prepareStatement(UPDATE);
 			stmt.setInt(1,cat.getNoCategorie() );
 			stmt.setString(2, cat.getLibelle());
@@ -163,7 +163,7 @@ public class CategorieDAOImpl implements CategorieDAO{
 			stmt.executeUpdate();
 			
 		} catch (SQLException e) {
-			throw new DALException("Mise à jour Impossible", e);
+			throw new DALException("Mise ï¿½ jour Impossible", e);
 		} finally {
 			if(conn!=null) {
 				try {
@@ -191,12 +191,12 @@ public class CategorieDAOImpl implements CategorieDAO{
 		
 		try {
 			conn = ConnectionProvider.getConnection();
-			//Execution de la requête
+			//Execution de la requï¿½te
 			stmt = conn.prepareStatement(DELETE);
 			stmt.setInt(1, no_categorie);
 			stmt.executeUpdate();
 		} catch (SQLException e) {
-			throw new DALException("Suppression de la catégorie "+no_categorie+" est impossible");
+			throw new DALException("Suppression de la catï¿½gorie "+no_categorie+" est impossible");
 		} finally {
 			if(conn!=null) {
 				try {

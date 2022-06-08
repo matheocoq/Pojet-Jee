@@ -13,11 +13,14 @@
 <span>Filtre :</span>
 <form action="/recherche/" method="post">
 <input name="recherche" type="text">
-<span>Mots de passe</span>
-<input name="mdp"type="text">
-<input name="souvenir" type="checkbox">
-<a>Mots de passe oublié</a>
-<button>Connexion</button>
+<label for="categorie-select">Choose a pet:</label>
+<select name="categorie" id="categorie-select">
+    <option value="Toute">Toute</option>
+    <option value="dog">Dog</option>
+</select>
+<button>Rechercher</button>
 </form>
+<div class="fiche-produit">
+</div>
 </body>
 </html>

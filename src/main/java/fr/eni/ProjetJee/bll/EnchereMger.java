@@ -9,7 +9,20 @@ import fr.eni.ProjetJee.dal.EnchereDAO;
 
 public class EnchereMger {
 	
-	EnchereDAO enchereDAO = DAOFactory.getDAOEnchere();
+	EnchereDAO enchereDAO;
+	
+	private static EnchereMger instance;
+	
+	public static EnchereMger getInstance() {
+		if(instance == null) {
+			instance = new EnchereMger();
+		}
+		return instance;
+	}
+	
+	private EnchereMger() {
+		enchereDAO = DAOFactory.getDAOEnchere();
+	}
 	
 	public void ajouterEnchere(Enchere enchere) throws BLLException {
 		try {

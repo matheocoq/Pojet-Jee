@@ -75,8 +75,8 @@ public class ArticleVenduDAOSqlServerlmpl implements ArticleVenduDAO {
 			// Recupérer l'identifiant créé
 
 			if (res.next()) {
-				res.getInt("no_retrait")
-					articlevendu = new ArticleVendu(res.getInt("no_article"),res.getString("nom_article"),res.getString("description"),res.getDate("date_debut_encheres"),res.getDate("date_fin_encheres"),res.getString("etat_vente"),res.getInt("prix_initial"),res.getInt("prix_vente"),res.getString("photo"),res.getInt("no_utilisateur"),res.getInt("no_categorie"));
+				res.getInt("no_retrait");
+				articlevendu = new ArticleVendu(res.getInt("no_article"),res.getString("nom_article"),res.getString("description"),res.getDate("date_debut_encheres"),res.getDate("date_fin_encheres"),res.getString("etat_vente"),res.getInt("prix_initial"),res.getInt("prix_vente"),res.getString("photo"),res.getInt("no_utilisateur"),res.getInt("no_categorie"));
 				
 			
 			}

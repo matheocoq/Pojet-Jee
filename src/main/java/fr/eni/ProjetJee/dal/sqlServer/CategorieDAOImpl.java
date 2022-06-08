@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.eni.ProjetJee.bo.Categorie;
-import fr.eni.ProjetJee.bo.Retrait;
 import fr.eni.ProjetJee.dal.CategorieDAO;
 import fr.eni.ProjetJee.dal.ConnectionProvider;
 import fr.eni.ProjetJee.dal.DALException;

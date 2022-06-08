@@ -1,5 +1,6 @@
 package fr.eni.ProjetJee.dal;
 
+import fr.eni.ProjetJee.dal.sqlServer.RetraitDAOImpl;
 import fr.eni.ProjetJee.dal.sqlServer.UtilisateurDAOSqlServerImpl;
 
 public class DAOFactory {
@@ -8,4 +9,7 @@ public class DAOFactory {
 		return new UtilisateurDAOSqlServerImpl();
 	}
 	
+	public static RetraitDAO getDAORetrait() {
+		return new RetraitDAOImpl();
+	}
 }

@@ -12,12 +12,12 @@ public class ArticleVendu {
 	private int prixDeVente;
 	private String etatVente;
 	private String photo;
-	private int noUtilisateur;
+	private Utilisateur Utilisateur;
 	private Retrait lieuRetrait;
 	private Categorie categorie;
 	
 	public ArticleVendu(int noArticle, String nomArticle, String description, LocalDateTime dateDebutEncheres,
-			LocalDateTime dateFinEncheres, int miseAPrix, String photo, int noUtilisateur,
+			LocalDateTime dateFinEncheres, String etatVente,int miseAPrix,int prixVente, String photo, Utilisateur utilisateur,
 			Retrait lieuRetrait, Categorie categorie) {
 		this.noArticle = noArticle;
 		this.nomArticle = nomArticle;
@@ -25,13 +25,14 @@ public class ArticleVendu {
 		this.dateDebutEncheres = dateDebutEncheres;
 		this.dateFinEncheres = dateFinEncheres;
 		this.miseAPrix = miseAPrix;
-		this.prixDeVente = 0;
-		this.etatVente = "";
+		this.prixDeVente = prixVente;
+		this.etatVente = etatVente;
 		this.photo = photo;
-		this.noUtilisateur = noUtilisateur;
+		this.Utilisateur = utilisateur;
 		this.lieuRetrait = lieuRetrait;
 		this.categorie = categorie;
 	}
+	
 
 	public int getNoArticle() {
 		return noArticle;
@@ -105,12 +106,12 @@ public class ArticleVendu {
 		this.photo = photo;
 	}
 
-	public int getNoUtilisateur() {
-		return noUtilisateur;
+	public Utilisateur getUtilisateur() {
+		return Utilisateur;
 	}
 
-	public void setNoUtilisateur(int noUtilisateur) {
-		this.noUtilisateur = noUtilisateur;
+	public void setUtilisateur(Utilisateur Utilisateur) {
+		this.Utilisateur = Utilisateur;
 	}
 
 	public Retrait getLieuRetrait() {
@@ -134,7 +135,7 @@ public class ArticleVendu {
 		return "ArticleVendu [noArticle=" + noArticle + ", nomArticle=" + nomArticle + ", description=" + description
 				+ ", dateDebutEncheres=" + dateDebutEncheres + ", dateFinEncheres=" + dateFinEncheres + ", miseAPrix="
 				+ miseAPrix + ", prixDeVente=" + prixDeVente + ", etatVente=" + etatVente + ", photo=" + photo
-				+ ", noUtilisateur=" + noUtilisateur + ", lieuRetrait=" + lieuRetrait + ", categorie=" + categorie
+				+ ", noUtilisateur=" + Utilisateur + ", lieuRetrait=" + lieuRetrait + ", categorie=" + categorie
 				+ "]";
 	}
 	

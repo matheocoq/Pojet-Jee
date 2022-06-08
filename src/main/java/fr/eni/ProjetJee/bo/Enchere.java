@@ -3,42 +3,42 @@ package fr.eni.ProjetJee.bo;
 import java.time.LocalDateTime;
 
 public class Enchere {
-	private int noEnchère;
-	private LocalDateTime dateEnchère;
-	private int montantEnchère;
+	private int noEnchere;
+	private LocalDateTime dateEnchere;
+	private int montantEnchere;
 	private int noUtilisateur;
 	private int noArticle;
 	
-	public Enchere(int noEnchère, LocalDateTime dateEnchère, int montantEnchère, int noUtilisateur, int noArticle) {
-		this.noEnchère = noEnchère;
-		this.dateEnchère = dateEnchère;
-		this.montantEnchère = montantEnchère;
+	public Enchere(int noEnchere, LocalDateTime dateEnchere, int montantEnchere, int noUtilisateur, int noArticle) {
+		this.noEnchere = noEnchere;
+		this.dateEnchere = dateEnchere;
+		this.montantEnchere = montantEnchere;
 		this.noUtilisateur = noUtilisateur;
 		this.noArticle = noArticle;
 	}
 
-	public int getNoEnchère() {
-		return noEnchère;
+	public int getNoEnchere() {
+		return noEnchere;
 	}
 
-	public void setNoEnchère(int noEnchère) {
-		this.noEnchère = noEnchère;
+	public void setNoEnchere(int noEnchere) {
+		this.noEnchere = noEnchere;
 	}
 
-	public LocalDateTime getDateEnchère() {
-		return dateEnchère;
+	public LocalDateTime getDateEnchere() {
+		return dateEnchere;
 	}
 
-	public void setDateEnchère(LocalDateTime dateEnchère) {
-		this.dateEnchère = dateEnchère;
+	public void setDateEnchere(LocalDateTime dateEnchere) {
+		this.dateEnchere = dateEnchere;
 	}
 
-	public int getMontantEnchère() {
-		return montantEnchère;
+	public int getMontantEnchere() {
+		return montantEnchere;
 	}
 
-	public void setMontantEnchère(int montantEnchère) {
-		this.montantEnchère = montantEnchère;
+	public void setMontantEnchere(int montantEnchere) {
+		this.montantEnchere = montantEnchere;
 	}
 
 	public int getNoUtilisateur() {

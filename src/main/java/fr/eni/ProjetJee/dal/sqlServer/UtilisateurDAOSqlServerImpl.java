@@ -3,6 +3,7 @@ package fr.eni.ProjetJee.dal.sqlServer;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 
 import fr.eni.ProjetJee.bo.Utilisateur;
@@ -13,6 +14,10 @@ import fr.eni.ProjetJee.dal.UtilisateursDAO;
 public class UtilisateurDAOSqlServerImpl implements UtilisateursDAO {
 	
 	private static final String INSERT = "INSERT INTO Utilisateurs(pseudo, nom, prenom, email, telephone, rue, code_postal, ville, mot_de_passe, credit, administrateur, active) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	private static final String SELECT_BY_ID = "SELECT * FROM UTILISATEURS WHERE no_utilisateur = ?";
+	private static final String SELECT_ALL = "SELECT * FROM UTILISATEURS";
+	private static final String UPDATE = "UPDATE UTILISATEURS set pseudo = ?, nom = ?, prenom = ?, email = ?, telephone = ?, rue = ?, code_postal = ?, ville = ?, mot_de_passe = ?, credit = ?, administrateur = ?, active = ?";
+	private static final String DELETE = "DELETE FROM UTILISATEURS WHERE noUtilisateur = ?";
 
 	@Override
 	public void insert(Utilisateur utilisateur) throws DALException {
@@ -23,16 +28,16 @@ public class UtilisateurDAOSqlServerImpl implements UtilisateursDAO {
 			//Préparer la requete
 			stmt.setString(1, utilisateur.getPseudo());
 			stmt.setString(2, utilisateur.getNom());
-			stmt.setString(1, utilisateur.getPrenom());
-			stmt.setString(1, utilisateur.getEmail());
-			stmt.setString(1, utilisateur.getTelephone());
-			stmt.setString(1, utilisateur.getRue());
-			stmt.setString(1, utilisateur.getCodePostal());
-			stmt.setString(1, utilisateur.getVille());
-			stmt.setString(1, utilisateur.getMotDePasse());
-			stmt.setInt(1, utilisateur.getCredit());
-			stmt.setBoolean(1, utilisateur.getAdministrateur());
-			stmt.setBoolean(1, utilisateur.getActiver());
+			stmt.setString(3, utilisateur.getPrenom());
+			stmt.setString(4, utilisateur.getEmail());
+			stmt.setString(5, utilisateur.getTelephone());
+			stmt.setString(6, utilisateur.getRue());
+			stmt.setString(7, utilisateur.getCodePostal());
+			stmt.setString(8, utilisateur.getVille());
+			stmt.setString(9, utilisateur.getMotDePasse());
+			stmt.setInt(10, utilisateur.getCredit());
+			stmt.setBoolean(11, utilisateur.getAdministrateur());
+			stmt.setBoolean(12, utilisateur.getActiver());
 			
 			//Executer la requete
 			stmt.executeUpdate();
@@ -50,26 +55,92 @@ public class UtilisateurDAOSqlServerImpl implements UtilisateursDAO {
 
 	@Override
 	public Utilisateur selectById(Integer noUtilisateur) throws DALException {
-		// TODO Auto-generated method stub
-		return null;
+		try (Connection conn = ConnectionProvider.getConnection();) {
+			PreparedStatement stmt = conn.prepareStatement(SELECT_BY_ID);
+			
+			//Préparer la requete
+			stmt.setInt(1, noUtilisateur);
+			
+			//Executer la requete
+			ResultSet rs = stmt.executeQuery();
+			
+			rs.next();
+			
+			Utilisateur user = new Utilisateur(rs.getInt("no_utilisateur"), rs.getString("pseudo"), rs.getString("nom"), rs.getString("prenom"), rs.getString("email"), rs.getString("telephone"), rs.getString("rue"), rs.getString("code_postal"), rs.getString("ville"), rs.getString("mot_de_passe"), rs.getInt("credit"), rs.getBoolean("administrateur"));
+			return user;
+			
+		} catch (Exception e) {
+			throw new DALException("Utilisateur selectById Error ", e);
+		}	
 	}
 
 	@Override
 	public List<Utilisateur> selectAll() throws DALException {
-		// TODO Auto-generated method stub
-		return null;
+		try (Connection conn = ConnectionProvider.getConnection();) {
+			PreparedStatement stmt = conn.prepareStatement(SELECT_ALL);
+			
+			List<Utilisateur> utilisateursList = new ArrayList<Utilisateur>();
+			
+			//Executer la requete
+			ResultSet rs = stmt.executeQuery();
+			
+			while (rs.next()) {
+				utilisateursList.add(new Utilisateur(rs.getInt("no_utilisateur"), rs.getString("pseudo"), rs.getString("nom"), rs.getString("prenom"), rs.getString("email"), rs.getString("telephone"), rs.getString("rue"), rs.getString("code_postal"), rs.getString("ville"), rs.getString("mot_de_passe"), rs.getInt("credit"), rs.getBoolean("administrateur")));
+			}
+			
+			return utilisateursList;
+			
+		} catch (Exception e) {
+			throw new DALException("Utilisateur selectAll Error ", e);
+		}
 	}
 
 	@Override
 	public void update(Utilisateur utilisateur) throws DALException {
-		// TODO Auto-generated method stub
-		
+		try (Connection conn = ConnectionProvider.getConnection();) {
+			
+			//Préparer la requete
+			PreparedStatement stmt = conn.prepareStatement(UPDATE);
+			stmt.setString(1, utilisateur.getPseudo());
+			stmt.setString(2, utilisateur.getNom());
+			stmt.setString(3, utilisateur.getPrenom());
+			stmt.setString(4, utilisateur.getEmail());
+			stmt.setString(5, utilisateur.getTelephone());
+			stmt.setString(6, utilisateur.getRue());
+			stmt.setString(7, utilisateur.getCodePostal());
+			stmt.setString(8, utilisateur.getVille());
+			stmt.setString(9, utilisateur.getMotDePasse());
+			stmt.setInt(10, utilisateur.getCredit());
+			stmt.setBoolean(11, utilisateur.getAdministrateur());
+			stmt.setBoolean(12, utilisateur.getActiver());
+			
+			
+			//Executer la requete
+			stmt.executeUpdate();
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+			throw new DALException("Utilisateur update Error", e);
+		}
 	}
 
 	@Override
 	public void delete(Integer noUtilisateur) throws DALException {
-		// TODO Auto-generated method stub
+		// Faire une transaction pour supprimer de la table Utilisateur et ajouter à la table archive Utilisateurs
 		
+		try (Connection conn = ConnectionProvider.getConnection();) {
+			
+			//Préparer la requete
+			PreparedStatement stmt = conn.prepareStatement(DELETE);
+			stmt.setInt(1, noUtilisateur);
+			
+			//Executer la requete
+			stmt.executeUpdate();
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+			throw new DALException("Utilisateur delete Error", e);
+		}
 	}
 
 }

@@ -8,10 +8,16 @@
 <title>Accueil</title>
 </head>
 <body>
-<form  method="post">
-<button class="rotating" name="choix" value="pierre" ><img src="<%= request.getContextPath() %>/image/chi.png" height ="80" width="100" /></button>
-<button class="rotating" name="choix" value="fueille"><img src="<%= request.getContextPath() %>/image/fou.png" height ="80" width="100" /></button>
-<button class="rotating" name="choix" value="ciseaux"><img src="<%= request.getContextPath() %>/image/mi.png" height ="80" width="100" /></button>
+<%@ include file="header/headerConnecter.html"%>
+<span>Liste des Enchères</span>
+<span>Filtre :</span>
+<form action="/recherche/" method="post">
+<input name="recherche" type="text">
+<span>Mots de passe</span>
+<input name="mdp"type="text">
+<input name="souvenir" type="checkbox">
+<a>Mots de passe oublié</a>
+<button>Connexion</button>
 </form>
 </body>
 </html>

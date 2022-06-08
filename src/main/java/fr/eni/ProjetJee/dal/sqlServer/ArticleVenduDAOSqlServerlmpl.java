@@ -12,9 +12,12 @@ import fr.eni.ProjetJee.bo.Categorie;
 import fr.eni.ProjetJee.bo.Retrait;
 import fr.eni.ProjetJee.bo.Utilisateur;
 import fr.eni.ProjetJee.dal.ArticleVenduDAO;
+import fr.eni.ProjetJee.dal.CategorieDAO;
 import fr.eni.ProjetJee.dal.DALException;
 import fr.eni.ProjetJee.dal.DAOFactory;
+import fr.eni.ProjetJee.dal.RetraitDAO;
 import fr.eni.ProjetJee.dal.UtilisateursDAO;
+
 import fr.eni.ProjetJee.dal.ConnectionProvider;
 
 import java.time.LocalDateTime;
@@ -78,21 +81,22 @@ public class ArticleVenduDAOSqlServerlmpl implements ArticleVenduDAO {
 
 			if (res.next()) {
 				
-				
-				
-				
 				 LocalDateTime date_debut_encheres = res.getDate("date_debut_encheres").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
 				 LocalDateTime date_fin_encheres = res.getDate("date_fin_encheres").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-				articlevendu = new ArticleVendu(res.getInt("no_article"),res.getString("nom_article"),res.getString("description"),date_debut_encheres,date_fin_encheres,res.getString("etat_vente"),res.getInt("prix_initial"),res.getInt("prix_vente"),res.getString("photo"),null,null,null);
+				 articlevendu = new ArticleVendu(res.getInt("no_article"),res.getString("nom_article"),res.getString("description"),date_debut_encheres,date_fin_encheres,res.getString("etat_vente"),res.getInt("prix_initial"),res.getInt("prix_vente"),res.getString("photo"),null,null,null);
 				
 				
 				UtilisateursDAO daoUtilisateur=(UtilisateursDAO) DAOFactory.getDAOUtilisateur();
 				Utilisateur utilisateur = daoUtilisateur.selectById(res.getInt("no_utilisateur"));
 				articlevendu.setUtilisateur(utilisateur);
-				res.getInt("no_categorie");
-				articlevendu.setLieuRetrait(null);
+				
+				CategorieDAO daoCategorie=(CategorieDAO) DAOFactory.getDAOCategorie();
+				Categorie categorie = daoCategorie.selectById(res.getInt("no_categorie"));
+				articlevendu.setCategorie(categorie);
 				if(res.getInt("no_retrait")>=0) {
-					articlevendu.setCategorie(null);
+					RetraitDAO daoRetrait=(RetraitDAO) DAOFactory.getDAORetrait();
+					Retrait retrait = daoRetrait.selectById(res.getInt("no_retrait"));
+					articlevendu.setLieuRetrait(retrait);
 				}
 				
 			
@@ -107,20 +111,138 @@ public class ArticleVenduDAOSqlServerlmpl implements ArticleVenduDAO {
 
 	@Override
 	public ArrayList<ArticleVendu> select() throws DALException {
+		ArrayList<ArticleVendu> articles =new ArrayList<ArticleVendu>();
+		
+		try(Connection conn = ConnectionProvider.getConnection();) {
+			
+			PreparedStatement stmt = conn.prepareStatement(SELECTALL);
+			
+			
+			//Executer la requete
+			ResultSet res= stmt.executeQuery();
+			
+			//Recupérer l'identifiant créé
+			while(res.next()) {
+				 LocalDateTime date_debut_encheres = res.getDate("date_debut_encheres").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+				 LocalDateTime date_fin_encheres = res.getDate("date_fin_encheres").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+				 ArticleVendu articlevendu = new ArticleVendu(res.getInt("no_article"),res.getString("nom_article"),res.getString("description"),date_debut_encheres,date_fin_encheres,res.getString("etat_vente"),res.getInt("prix_initial"),res.getInt("prix_vente"),res.getString("photo"),null,null,null);
+				
+				
+				UtilisateursDAO daoUtilisateur=(UtilisateursDAO) DAOFactory.getDAOUtilisateur();
+				Utilisateur utilisateur = daoUtilisateur.selectById(res.getInt("no_utilisateur"));
+				articlevendu.setUtilisateur(utilisateur);
+				
+				CategorieDAO daoCategorie=(CategorieDAO) DAOFactory.getDAOCategorie();
+				Categorie categorie = daoCategorie.selectById(res.getInt("no_categorie"));
+				articlevendu.setCategorie(categorie);
+				if(res.getInt("no_retrait")>=0) {
+					RetraitDAO daoRetrait=(RetraitDAO) DAOFactory.getDAORetrait();
+					Retrait retrait = daoRetrait.selectById(res.getInt("no_retrait"));
+					articlevendu.setLieuRetrait(retrait);
+				}
+				articles.add(articlevendu);
+			}
+			
+				
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		// TODO Auto-generated method stub
-		return null;
+		return articles;
 	}
 
 	@Override
 	public ArrayList<ArticleVendu> selectByUtilisateur(Utilisateur utilisateur) throws DALException {
+		
+		ArrayList<ArticleVendu> articles =new ArrayList<ArticleVendu>();
+		
+		try(Connection conn = ConnectionProvider.getConnection();) {
+			
+			PreparedStatement stmt = conn.prepareStatement(SELECTBYUTILISATEUR);
+			stmt.setInt(1, utilisateur.getNoUtilisateur());
+			
+			//Executer la requete
+			ResultSet res= stmt.executeQuery();
+			
+			//Recupérer l'identifiant créé
+			while(res.next()) {
+				 LocalDateTime date_debut_encheres = res.getDate("date_debut_encheres").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+				 LocalDateTime date_fin_encheres = res.getDate("date_fin_encheres").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+				 ArticleVendu articlevendu = new ArticleVendu(res.getInt("no_article"),res.getString("nom_article"),res.getString("description"),date_debut_encheres,date_fin_encheres,res.getString("etat_vente"),res.getInt("prix_initial"),res.getInt("prix_vente"),res.getString("photo"),null,null,null);
+				
+				
+				UtilisateursDAO daoUtilisateur=(UtilisateursDAO) DAOFactory.getDAOUtilisateur();
+				Utilisateur utilisateure = daoUtilisateur.selectById(res.getInt("no_utilisateur"));
+				articlevendu.setUtilisateur(utilisateure);
+				
+				CategorieDAO daoCategorie=(CategorieDAO) DAOFactory.getDAOCategorie();
+				Categorie categorie = daoCategorie.selectById(res.getInt("no_categorie"));
+				articlevendu.setCategorie(categorie);
+				if(res.getInt("no_retrait")>=0) {
+					RetraitDAO daoRetrait=(RetraitDAO) DAOFactory.getDAORetrait();
+					Retrait retrait = daoRetrait.selectById(res.getInt("no_retrait"));
+					articlevendu.setLieuRetrait(retrait);
+				}
+				articles.add(articlevendu);
+			}
+			
+				
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		// TODO Auto-generated method stub
-		return null;
+		return articles;
 	}
 
 	@Override
 	public ArrayList<ArticleVendu> selectByCategorie(Categorie categorie) throws DALException {
+ArrayList<ArticleVendu> articles =new ArrayList<ArticleVendu>();
+		
+		try(Connection conn = ConnectionProvider.getConnection();) {
+			
+			PreparedStatement stmt = conn.prepareStatement(SELECTBYCATEGORIE);
+			stmt.setInt(1, categorie.getNoCategorie());
+			
+			//Executer la requete
+			ResultSet res= stmt.executeQuery();
+			
+			//Recupérer l'identifiant créé
+			while(res.next()) {
+				 LocalDateTime date_debut_encheres = res.getDate("date_debut_encheres").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+				 LocalDateTime date_fin_encheres = res.getDate("date_fin_encheres").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+				 ArticleVendu articlevendu = new ArticleVendu(res.getInt("no_article"),res.getString("nom_article"),res.getString("description"),date_debut_encheres,date_fin_encheres,res.getString("etat_vente"),res.getInt("prix_initial"),res.getInt("prix_vente"),res.getString("photo"),null,null,null);
+				
+				
+				UtilisateursDAO daoUtilisateur=(UtilisateursDAO) DAOFactory.getDAOUtilisateur();
+				Utilisateur utilisateur = daoUtilisateur.selectById(res.getInt("no_utilisateur"));
+				articlevendu.setUtilisateur(utilisateur);
+				
+				CategorieDAO daoCategorie=(CategorieDAO) DAOFactory.getDAOCategorie();
+				Categorie categoriee = daoCategorie.selectById(res.getInt("no_categorie"));
+				articlevendu.setCategorie(categoriee);
+				if(res.getInt("no_retrait")>=0) {
+					RetraitDAO daoRetrait=(RetraitDAO) DAOFactory.getDAORetrait();
+					Retrait retrait = daoRetrait.selectById(res.getInt("no_retrait"));
+					articlevendu.setLieuRetrait(retrait);
+				}
+				articles.add(articlevendu);
+			}
+			
+				
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		// TODO Auto-generated method stub
-		return null;
+		return articles;
 	}
 
 	@Override
@@ -144,11 +266,23 @@ public class ArticleVenduDAOSqlServerlmpl implements ArticleVenduDAO {
 	public void update(ArticleVendu article) throws DALException {
 		
 		try(Connection conn = ConnectionProvider.getConnection();) {
-			
+	
 			PreparedStatement stmt = conn.prepareStatement(UPDATE);
-			stmt.setString(1, article.getNom());
-			stmt.setInt(2, article.getRepas());
-			stmt.setInt(3, article.getIdentifiant());
+			stmt.setString(1, article.getNomArticle());
+			stmt.setString(2, article.getDescription());
+			 Date date1 = Date.from(article.getDateDebutEncheres().atZone(ZoneId.systemDefault()).toInstant());
+			stmt.setDate(3, (java.sql.Date) date1);
+			 Date date2 = Date.from(article.getDateFinEncheres().atZone(ZoneId.systemDefault()).toInstant());
+			stmt.setDate(4, (java.sql.Date) date2);
+			stmt.setInt(5, article.getMiseAPrix());
+			stmt.setInt(6, article.getPrixDeVente());
+			stmt.setInt(7, article.getUtilisateur().getNoUtilisateur());
+			stmt.setInt(8, article.getCategorie().getNoCategorie());
+			stmt.setInt(9, article.getLieuRetrait().getNoRetrait());
+			stmt.setString(10, article.getPhoto());
+			stmt.setString(11, article.getEtatVente());
+			stmt.setInt(12, article.getNoArticle());
+			
 			
 			//Executer la requete
 			stmt.executeUpdate();
@@ -157,7 +291,7 @@ public class ArticleVenduDAOSqlServerlmpl implements ArticleVenduDAO {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}s
+		}
 	}
 
 }

@@ -2,27 +2,32 @@ package fr.eni.ProjetJee.bo;
 
 public class Retrait {
 
+	private int noRetrait;
 	private int noArticle;
 	private String rue;
 	private String codePostal;
 	private String ville;
+
 	
-	
-	
-	public Retrait(int noArticle, String rue, String codePostal, String ville) {
+	public Retrait(int noRetrait,int noArticle, String rue, String codePostal, String ville) {
+		this.noRetrait = noRetrait;
 		this.noArticle = noArticle;
 		this.rue = rue;
 		this.codePostal = codePostal;
 		this.ville = ville;
 	}
 
-	
+	public int getNoRetrait() {
+		return noRetrait;
+	}
+
+	public void setNoRetrait(int noRetrait) {
+		this.noRetrait = noRetrait;
+	}
 
 	public int getNoArticle() {
 		return noArticle;
 	}
-
-
 
 	public void setNoArticle(int noArticle) {
 		this.noArticle = noArticle;

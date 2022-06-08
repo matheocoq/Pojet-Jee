@@ -6,15 +6,22 @@ public class Enchere {
 	private int noEnchere;
 	private LocalDateTime dateEnchere;
 	private int montantEnchere;
-	private int noUtilisateur;
-	private int noArticle;
+	private Utilisateur utilisateur;
+	private ArticleVendu articleVendu;
 	
-	public Enchere(int noEnchere, LocalDateTime dateEnchere, int montantEnchere, int noUtilisateur, int noArticle) {
+	public Enchere(int noEnchere, LocalDateTime dateEnchere, int montantEnchere, Utilisateur utilisateur, ArticleVendu articleVendu) {
 		this.noEnchere = noEnchere;
 		this.dateEnchere = dateEnchere;
 		this.montantEnchere = montantEnchere;
-		this.noUtilisateur = noUtilisateur;
-		this.noArticle = noArticle;
+		this.utilisateur = utilisateur;
+		this.articleVendu = articleVendu;
+	}
+	
+	public Enchere(LocalDateTime dateEnchere, int montantEnchere, Utilisateur utilisateur, ArticleVendu articleVendu) {
+		this.dateEnchere = dateEnchere;
+		this.montantEnchere = montantEnchere;
+		this.utilisateur = utilisateur;
+		this.articleVendu = articleVendu;
 	}
 
 	public int getNoEnchere() {
@@ -41,20 +48,20 @@ public class Enchere {
 		this.montantEnchere = montantEnchere;
 	}
 
-	public int getNoUtilisateur() {
-		return noUtilisateur;
+	public Utilisateur getNoUtilisateur() {
+		return utilisateur;
 	}
 
-	public void setNoUtilisateur(int noUtilisateur) {
-		this.noUtilisateur = noUtilisateur;
+	public void setNoUtilisateur(Utilisateur utilisateur) {
+		this.utilisateur = utilisateur;
 	}
 
-	public int getNoArticle() {
-		return noArticle;
+	public ArticleVendu getNoArticle() {
+		return articleVendu;
 	}
 
-	public void setNoArticle(int noArticle) {
-		this.noArticle = noArticle;
+	public void setNoArticle(ArticleVendu articleVendu) {
+		this.articleVendu = articleVendu;
 	}
 	
 	

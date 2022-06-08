@@ -64,4 +64,20 @@ public class UtilisateurMger {
 			throw new BLLException("supprimerUtilisateur Error ", e);
 		}
 	}
+	
+	public Utilisateur utilisateurByEmail(String email) throws BLLException {
+		try {
+			return utilisateurDAO.selectByEmail(email);
+		} catch (DALException e) {
+			throw new BLLException("utilisateurByEmail Error ", e);
+		}
+	}
+	
+	public void verifConnexion(String email, String mdp) throws BLLException {
+		Utilisateur user = utilisateurByEmail(email);
+		// Modifier pour prendre en charge le hashage
+		if (user == null || !user.getMotDePasse().equals(mdp)) {
+			throw new BLLException("email ou mdp incorrect !");
+		}
+	}
 }

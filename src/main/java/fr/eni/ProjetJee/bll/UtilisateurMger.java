@@ -10,7 +10,20 @@ import fr.eni.ProjetJee.dal.UtilisateursDAO;
 
 public class UtilisateurMger {
 
-	UtilisateursDAO utilisateurDAO = DAOFactory.getDAOUtilisateur();
+	UtilisateursDAO utilisateurDAO;
+	
+	private static UtilisateurMger instance;
+	
+	public static UtilisateurMger getInstance() {
+		if(instance == null) {
+			instance = new UtilisateurMger();
+		}
+		return instance;
+	}
+	
+	private UtilisateurMger() {
+		utilisateurDAO = DAOFactory.getDAOUtilisateur();
+	}
 	
 	public void ajouterUtilisateur(Utilisateur utilisateur) throws BLLException {
 		try {

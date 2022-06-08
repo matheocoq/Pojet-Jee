@@ -186,6 +186,15 @@ public class Utilisateur {
 	}
 
 
+	public boolean getActiver() {
+		return activer;
+	}
+
+	public void setActiver(boolean activer) {
+		this.activer = activer;
+	}
+
+
 	@Override
 	public String toString() {
 		return "Utilisateur [noUtilisateur=" + noUtilisateur + ", pseudo=" + pseudo + ", nom=" + nom + ", prenom="

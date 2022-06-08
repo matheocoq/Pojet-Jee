@@ -9,7 +9,7 @@
 </head>
 <body>
 <%@ include file="header/header.html"%>
-<form action="/tpConnexion/" method="post">
+<form action="/login/" method="post">
 <span>Identifiant</span>
 <input name="login" type="text">
 <span>Mots de passe</span>

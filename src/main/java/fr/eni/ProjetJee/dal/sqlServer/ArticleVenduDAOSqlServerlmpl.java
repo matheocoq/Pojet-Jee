@@ -13,6 +13,8 @@ import fr.eni.ProjetJee.bo.Retrait;
 import fr.eni.ProjetJee.bo.Utilisateur;
 import fr.eni.ProjetJee.dal.ArticleVenduDAO;
 import fr.eni.ProjetJee.dal.DALException;
+import fr.eni.ProjetJee.dal.DAOFactory;
+import fr.eni.ProjetJee.dal.UtilisateursDAO;
 import fr.eni.ProjetJee.dal.ConnectionProvider;
 
 import java.time.LocalDateTime;
@@ -26,7 +28,7 @@ public class ArticleVenduDAOSqlServerlmpl implements ArticleVenduDAO {
 	private static final String SELECTBYUTILISATEUR = "Select * from ARTICLES_VENDUS where no_utilisateur=?";
 	private static final String SELECTBYCATEGORIE = "Select * from ARTICLES_VENDUS where no_categorie=?";
 	private static final String DELETE = "DELETE FROM ARTICLES_VENDUS WHERE no_article=?;";
-	private static final String UPDATE = "UPDATE ARTICLES_VENDUS SET nom_article = ?, description = ? , date_debut_encheres = ?, date_fin_encheres = ?, prix_initial = ?, prix_vente = ?, no_utilisateur = ?, no_categorie = ? WHERE no_article=?;";
+	private static final String UPDATE = "UPDATE ARTICLES_VENDUS SET nom_article = ?, description = ? , date_debut_encheres = ?, date_fin_encheres = ?, prix_initial = ?, prix_vente = ?, no_utilisateur = ?, no_categorie = ? , no_retrait =? ,photo=? ,etat_vente = ? WHERE no_article=?;";
 
 	@Override
 	public void insert(ArticleVendu article) throws DALException {
@@ -75,8 +77,23 @@ public class ArticleVenduDAOSqlServerlmpl implements ArticleVenduDAO {
 			// Recupérer l'identifiant créé
 
 			if (res.next()) {
-				res.getInt("no_retrait")
-					articlevendu = new ArticleVendu(res.getInt("no_article"),res.getString("nom_article"),res.getString("description"),res.getDate("date_debut_encheres"),res.getDate("date_fin_encheres"),res.getString("etat_vente"),res.getInt("prix_initial"),res.getInt("prix_vente"),res.getString("photo"),res.getInt("no_utilisateur"),res.getInt("no_categorie"));
+				
+				
+				
+				
+				 LocalDateTime date_debut_encheres = res.getDate("date_debut_encheres").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+				 LocalDateTime date_fin_encheres = res.getDate("date_fin_encheres").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+				articlevendu = new ArticleVendu(res.getInt("no_article"),res.getString("nom_article"),res.getString("description"),date_debut_encheres,date_fin_encheres,res.getString("etat_vente"),res.getInt("prix_initial"),res.getInt("prix_vente"),res.getString("photo"),null,null,null);
+				
+				
+				UtilisateursDAO daoUtilisateur=(UtilisateursDAO) DAOFactory.getDAOUtilisateur();
+				Utilisateur utilisateur = daoUtilisateur.selectById(res.getInt("no_utilisateur"));
+				articlevendu.setUtilisateur(utilisateur);
+				res.getInt("no_categorie");
+				articlevendu.setLieuRetrait(null);
+				if(res.getInt("no_retrait")>=0) {
+					articlevendu.setCategorie(null);
+				}
 				
 			
 			}
@@ -108,14 +125,39 @@ public class ArticleVenduDAOSqlServerlmpl implements ArticleVenduDAO {
 
 	@Override
 	public void delete(int id) throws DALException {
-		// TODO Auto-generated method stub
+		
+		try(Connection conn = ConnectionProvider.getConnection();) {
+			
+			PreparedStatement stmt = conn.prepareStatement(DELETE);
+			stmt.setInt(1, id);
+			stmt.executeUpdate();
+			
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 
 	@Override
 	public void update(ArticleVendu article) throws DALException {
-		// TODO Auto-generated method stub
 		
+		try(Connection conn = ConnectionProvider.getConnection();) {
+			
+			PreparedStatement stmt = conn.prepareStatement(UPDATE);
+			stmt.setString(1, article.getNom());
+			stmt.setInt(2, article.getRepas());
+			stmt.setInt(3, article.getIdentifiant());
+			
+			//Executer la requete
+			stmt.executeUpdate();
+			
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}s
 	}
 
 }

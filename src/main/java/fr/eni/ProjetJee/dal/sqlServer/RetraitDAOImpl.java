@@ -30,7 +30,7 @@ public class RetraitDAOImpl implements RetraitDAO{
 
 			//Préparer la requete
 			PreparedStatement stmt = conn.prepareStatement(INSERT, PreparedStatement.RETURN_GENERATED_KEYS);
-			stmt.setInt(2, retrait.getNoArticle());
+			stmt.setInt(2, retrait.getNo_article());
 			stmt.setString(3, retrait.getRue());
 			stmt.setString(4, retrait.getCodePostal());
 			stmt.setString(5,retrait.getVille());
@@ -161,7 +161,7 @@ public class RetraitDAOImpl implements RetraitDAO{
 			
 			//Execution de la requête
 			stmt = conn.prepareStatement(UPDATE);
-			stmt.setInt(1,retrait.getNoArticle() );
+			stmt.setInt(1,retrait.getNo_article());
 			stmt.setString(2, retrait.getRue());
 			stmt.setString(3, retrait.getCodePostal());
 			stmt.setString(4, retrait.getVille());

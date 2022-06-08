@@ -162,6 +162,19 @@ public class Utilisateur {
 	public void setAdministrateur(boolean administrateur) {
 		this.administrateur = administrateur;
 	}
+	
+
+
+	public boolean isActiver() {
+		return activer;
+	}
+
+
+
+	public void setActiver(boolean activer) {
+		this.activer = activer;
+	}
+
 
 
 	@Override

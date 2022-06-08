@@ -2,14 +2,14 @@ package fr.eni.ProjetJee.dal;
 
 import java.util.List;
 
-import fr.eni.ProjetJee.bo.Utilisateurs;
+import fr.eni.ProjetJee.bo.Utilisateur;
 
 public interface UtilisateursDAO {
 	
-	void insert (Utilisateurs utilisateur) throws DALException;
-	Utilisateurs selectById(Integer noUtilisateur) throws DALException;
-	List<Utilisateurs> selectAll() throws DALException;
-	void update(Utilisateurs utilisateur) throws DALException;
+	void insert (Utilisateur utilisateur) throws DALException;
+	Utilisateur selectById(Integer noUtilisateur) throws DALException;
+	List<Utilisateur> selectAll() throws DALException;
+	void update(Utilisateur utilisateur) throws DALException;
 	void delete(Integer noUtilisateur) throws DALException;
 
 }

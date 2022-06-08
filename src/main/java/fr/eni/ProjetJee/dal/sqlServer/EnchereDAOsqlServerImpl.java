@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 
 import fr.eni.ProjetJee.bo.Enchere;
-import fr.eni.ProjetJee.bo.Utilisateur;
+import fr.eni.ProjetJee.dal.ArticleVenduDAO;
 import fr.eni.ProjetJee.dal.ConnectionProvider;
 import fr.eni.ProjetJee.dal.DALException;
 import fr.eni.ProjetJee.dal.DAOFactory;
@@ -21,7 +21,9 @@ public class EnchereDAOsqlServerImpl implements EnchereDAO {
 	private static final String SELECT_BY_INDEX = "SELECT * FROM ENCHERES WHERE date_enchere = ?, no_article = ?, no_utilisateur = ?";
 	private static final String SELECT_LAST = "SELECT * FROM ENCHERES WHERE no_article = ?, no_utilisateur = ? ORDER BY date_enchere DESC LIMIT 1";
 	private static final String DELETE_BY_USER = "DELETE FROM ENCHERES WHERE no_utilisateur = ?";
+	
 	private static UtilisateursDAO utilisateurDAO = DAOFactory.getDAOUtilisateur();
+	private static ArticleVenduDAO articleVenduDAO = DAOFactory.getDAOArticleVendu();
 
 	@Override
 	public void insert(Enchere enchere) throws DALException {
@@ -60,7 +62,7 @@ public class EnchereDAOsqlServerImpl implements EnchereDAO {
 			rs.next();
 			
 			// Ajouter articleVenduDAO pour get l'article
-			Enchere enchere = new Enchere(rs.getTimestamp("date_enchere").toLocalDateTime(), rs.getInt("montant_enchere"), utilisateurDAO.selectById(rs.getInt("no_utilisateur")), null);
+			Enchere enchere = new Enchere(rs.getTimestamp("date_enchere").toLocalDateTime(), rs.getInt("montant_enchere"), utilisateurDAO.selectById(rs.getInt("no_utilisateur")), articleVenduDAO.select(rs.getInt("no_article")));
 			return enchere;
 			
 		} catch (Exception e) {
@@ -100,7 +102,7 @@ public class EnchereDAOsqlServerImpl implements EnchereDAO {
 			rs.next();
 			
 			// Ajouter articleVenduDAO pour get l'article
-			Enchere enchere = new Enchere(rs.getTimestamp("date_enchere").toLocalDateTime(), rs.getInt("montant_enchere"), utilisateurDAO.selectById(rs.getInt("no_utilisateur")), null);
+			Enchere enchere = new Enchere(rs.getTimestamp("date_enchere").toLocalDateTime(), rs.getInt("montant_enchere"), utilisateurDAO.selectById(rs.getInt("no_utilisateur")), articleVenduDAO.select(rs.getInt("no_article")));
 			return enchere;
 			
 		} catch (Exception e) {

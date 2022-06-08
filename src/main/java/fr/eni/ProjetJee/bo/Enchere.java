@@ -2,14 +2,14 @@ package fr.eni.ProjetJee.bo;
 
 import java.time.LocalDateTime;
 
-public class Enchère {
+public class Enchere {
 	private int noEnchère;
 	private LocalDateTime dateEnchère;
 	private int montantEnchère;
 	private int noUtilisateur;
 	private int noArticle;
 	
-	public Enchère(int noEnchère, LocalDateTime dateEnchère, int montantEnchère, int noUtilisateur, int noArticle) {
+	public Enchere(int noEnchère, LocalDateTime dateEnchère, int montantEnchère, int noUtilisateur, int noArticle) {
 		this.noEnchère = noEnchère;
 		this.dateEnchère = dateEnchère;
 		this.montantEnchère = montantEnchère;

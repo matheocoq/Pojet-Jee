@@ -61,10 +61,28 @@ public class ArticleVenduMger {
 		}
 	}
 	
-	public ArrayList<ArticleVendu> articleVenduByCategorie(Categorie categorie) throws BLLException {
+	public ArrayList<ArticleVendu> articleVenduByCategorie(int categorie) throws BLLException {
 		try {
 			// (DALE -> mettre id de la categorie en parametre pas la categorie en entier)
 			return articleVenduDAO.selectByCategorie(categorie);
+		} catch (DALException e) {
+			throw new BLLException("articleVenduByCategorie Error ", e);
+		}
+	}
+	
+	public ArrayList<ArticleVendu> articleVenduByCategorieName(int categorie , String name) throws BLLException {
+		try {
+			// (DALE -> mettre id de la categorie en parametre pas la categorie en entier)
+			return articleVenduDAO.selectByCategorieName(categorie,name);
+		} catch (DALException e) {
+			throw new BLLException("articleVenduByCategorie Error ", e);
+		}
+	}
+	
+	public ArrayList<ArticleVendu> articleVenduByName(String name) throws BLLException {
+		try {
+			// (DALE -> mettre id de la categorie en parametre pas la categorie en entier)
+			return articleVenduDAO.selectByName(name);
 		} catch (DALException e) {
 			throw new BLLException("articleVenduByCategorie Error ", e);
 		}
@@ -84,6 +102,57 @@ public class ArticleVenduMger {
 		} catch (DALException e) {
 			throw new BLLException("majArticleVendu Error ", e);
 		}
+	}
+	
+	public ArrayList<ArticleVendu> filtreNonCo(String categorie,String nom) throws BLLException{
+		System.out.println(categorie);
+		System.out.println(categorie=="Toute");
+		if(categorie.equals("Toute")) {
+			if(nom.equals("")) {
+				System.out.println("je passe 1");
+				return allArticleVendu();
+			}
+			else {
+				System.out.println("je passe 2");
+				return articleVenduByName("%"+nom+"%");
+			}
+		}
+		else {
+			if(nom.equals("")) {
+				System.out.println("je passe 3");
+				return articleVenduByCategorie(Integer.parseInt(categorie));
+			}
+			else {
+				System.out.println("je passe 4");
+				return articleVenduByCategorieName(Integer.parseInt(categorie), "%"+nom+"%");
+			}
+		}
+		
+	}
+	
+	public ArrayList<ArticleVendu> filtreCo(String categorie,String nom) throws BLLException{
+		if(categorie.equals("Toute")) {
+			if(nom.equals("")) {
+				System.out.println("je passe 1");
+				return allArticleVendu();
+			}
+			else {
+				System.out.println("je passe 2");
+				return articleVenduByName("%"+nom+"%");
+			}
+		}
+		else {
+			if(nom.equals("")) {
+				System.out.println("je passe 3");
+				return articleVenduByCategorie(Integer.parseInt(categorie));
+			}
+			else {
+				System.out.println("je passe 4");
+				return articleVenduByCategorieName(Integer.parseInt(categorie), "%"+nom+"%");
+			}
+		}
+		
+		
 	}
 
 }

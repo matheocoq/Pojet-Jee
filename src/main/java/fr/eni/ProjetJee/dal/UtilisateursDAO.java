@@ -8,7 +8,7 @@ public interface UtilisateursDAO {
 	
 	void insert (Utilisateur utilisateur) throws DALException;
 	Utilisateur selectById(Integer noUtilisateur) throws DALException;
-	Utilisateur selectByEmail(String email) throws DALException;
+	Utilisateur selectByLogin(String login) throws DALException;
 	List<Utilisateur> selectAll() throws DALException;
 	void update(Utilisateur utilisateur) throws DALException;
 	void delete(Integer noUtilisateur) throws DALException;

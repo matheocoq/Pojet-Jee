@@ -1,14 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Connexion</title>
-</head>
-<body>
-	<%@ include file="header/header.html"%>
+<jsp:include page="header/header.jsp" />
 	<div class="container">
 		<form action="" method="post">
 		
@@ -30,12 +20,11 @@
 			</div>
 			
 			<div class="mt-2">
-				<a>Mots de passe oubliÃ©</a>
+				<a>Mots de passe oublié</a>
 			</div> -->
 				
 			<button class="btn btn-primary my-3">Connexion</button>
 		</form>
-		<a class="text-decoration-none text-primary fw-bold" href="/Projet_ENI-Encheres/register">CrÃ©e un compte</a>
+		<a class="text-decoration-none text-primary fw-bold" href="/Projet_ENI-Encheres/register">Crée un compte</a>
 	</div>
-</body>
-</html>
+<jsp:include page="footer/footer.jsp" />

@@ -67,17 +67,20 @@ public class UtilisateurMger {
 		}
 	}
 
-	public Utilisateur utilisateurByEmail(String email) throws BLLException {
+	public Utilisateur utilisateurByLogin(String login) throws BLLException {
 		try {
-			return utilisateurDAO.selectByEmail(email);
+			return utilisateurDAO.selectByLogin(login);
 		} catch (DALException e) {
-			throw new BLLException("utilisateurByEmail Error ", e);
+			throw new BLLException("utilisateurByLogin Error ", e);
 		}
 	}
 
-	public void verifConnexion(String email, String mdp) throws BLLException {
-		Utilisateur user = utilisateurByEmail(email);
-		if (user == null || !this.compareHashPassword(mdp, user.getMotDePasse())) {
+	public Utilisateur verifConnexion(String login, String mdp) throws BLLException {
+		
+		Utilisateur user = this.utilisateurByLogin(login);
+		if (user != null && this.compareHashPassword(mdp, user.getMotDePasse())) {
+			return user;
+		} else {
 			throw new BLLException("email ou mdp incorrect !");
 		}
 	}
@@ -100,7 +103,7 @@ public class UtilisateurMger {
 	}
 	
 	private boolean compareHashPassword(String inputMdp, String bddMdp) {
-		String generatedPassword = this.generateHash(inputMdp);		
+		String generatedPassword = this.generateHash(inputMdp);	
 		if(bddMdp.equals(generatedPassword)) {
 			return true;
 		} else {

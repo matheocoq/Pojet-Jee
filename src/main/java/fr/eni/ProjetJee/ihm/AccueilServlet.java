@@ -64,7 +64,7 @@ public class AccueilServlet extends HttpServlet {
 			System.out.println(nom);
 			System.out.println(categorie);
 			try {
-				articles=articleVenduMger.allArticleVendu();
+				articles=articleVenduMger.filtreNonCo(categorie,nom);
 			} catch (BLLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

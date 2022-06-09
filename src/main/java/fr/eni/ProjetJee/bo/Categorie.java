@@ -9,6 +9,10 @@ public class Categorie {
 		this.noCategorie = noCategorie;
 		Libelle = libelle;
 	}
+	
+	public Categorie(String libelle) {
+		Libelle = libelle;
+	}
 
 	public int getNoCategorie() {
 		return noCategorie;

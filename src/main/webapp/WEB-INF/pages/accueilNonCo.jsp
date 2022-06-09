@@ -9,5 +9,6 @@
 </head>
 <body>
 <%@ include file="header/headerNonConnecter.html"%>
+<span>Liste des enchère</span>
 </body>
 </html>

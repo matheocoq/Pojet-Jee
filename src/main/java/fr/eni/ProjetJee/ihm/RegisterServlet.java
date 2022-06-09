@@ -19,7 +19,7 @@ import javax.servlet.RequestDispatcher;
  * Servlet implementation class RegisterServer
  */
 @WebServlet({"/register","/ajouter"})
-public class RegisterServer extends HttpServlet {
+public class RegisterServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 

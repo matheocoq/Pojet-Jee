@@ -43,7 +43,7 @@ public class AfficherProfilServlet extends HttpServlet {
 				
 				Utilisateur userSession = null;
 				
-				if (session.getAttribute("utilisateur") != null) {
+				if (session != null && session.getAttribute("utilisateur") != null) {
 					userSession = (Utilisateur) session.getAttribute("utilisateur");
 				}
 

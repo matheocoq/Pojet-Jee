@@ -26,6 +26,7 @@
 				<p>${ user.getPrenom() }</p>
 			</div>
 		</div>
+		<% if (request.getAttribute("owner") != null) { %>
 		<div class="row">
 			<div class="col">
 				<p class="fw-bold">E-mail :</p>
@@ -50,6 +51,7 @@
 				<p>${ user.getRue() }</p>
 			</div>
 		</div>
+		<% } %>
 		<div class="row">
 			<div class="col">
 				<p class="fw-bold">Code Postal :</p>

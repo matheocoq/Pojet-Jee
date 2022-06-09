@@ -15,7 +15,7 @@ public class UtilisateurDAOSqlServerImpl implements UtilisateursDAO {
 	
 	private static final String INSERT = "INSERT INTO Utilisateurs(pseudo, nom, prenom, email, telephone, rue, code_postal, ville, mot_de_passe, credit, administrateur, active) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	private static final String SELECT_BY_ID = "SELECT * FROM UTILISATEURS WHERE no_utilisateur = ?";
-	private static final String SELECT_BY_EMAIL = "SELECT * FROM UTILISATEURS WHERE email = ?";
+	private static final String SELECT_BY_LOGIN = "SELECT * FROM UTILISATEURS WHERE email = ? or pseudo = ?";
 	private static final String SELECT_ALL = "SELECT * FROM UTILISATEURS";
 	private static final String UPDATE = "UPDATE UTILISATEURS set pseudo = ?, nom = ?, prenom = ?, email = ?, telephone = ?, rue = ?, code_postal = ?, ville = ?, mot_de_passe = ?, credit = ?, administrateur = ?, active = ?";
 	private static final String DELETE = "DELETE FROM UTILISATEURS WHERE noUtilisateur = ?";
@@ -145,12 +145,13 @@ public class UtilisateurDAOSqlServerImpl implements UtilisateursDAO {
 	}
 
 	@Override
-	public Utilisateur selectByEmail(String email) throws DALException {
+	public Utilisateur selectByLogin(String login) throws DALException {
 		try (Connection conn = ConnectionProvider.getConnection();) {
-			PreparedStatement stmt = conn.prepareStatement(SELECT_BY_EMAIL);
+			PreparedStatement stmt = conn.prepareStatement(SELECT_BY_LOGIN);
 			
 			//Préparer la requete
-			stmt.setString(1, email);
+			stmt.setString(1, login);
+			stmt.setString(2, login);
 			
 			//Executer la requete
 			ResultSet rs = stmt.executeQuery();
@@ -161,7 +162,7 @@ public class UtilisateurDAOSqlServerImpl implements UtilisateursDAO {
 			return user;
 			
 		} catch (Exception e) {
-			throw new DALException("Utilisateur selectById Error ", e);
+			throw new DALException("Utilisateur selectByEmail Error ", e);
 		}
 	}
 

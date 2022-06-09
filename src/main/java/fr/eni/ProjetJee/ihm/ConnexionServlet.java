@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import fr.eni.ProjetJee.bll.BLLException;
 import fr.eni.ProjetJee.bll.UtilisateurMger;
+import fr.eni.ProjetJee.bo.Utilisateur;
 
 /**
  * Servlet implementation class ConnexionServlet
@@ -28,7 +29,7 @@ public class ConnexionServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {	
 		request.getRequestDispatcher("/WEB-INF/pages/connexion.jsp").forward(request, response);
 	}
 
@@ -36,17 +37,18 @@ public class ConnexionServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String email = request.getParameter("email");
+		String login = request.getParameter("login");
 		String mdp = request.getParameter("mdp");
-		System.out.println(email);
-		System.out.println(mdp);
 		try {
 			UtilisateurMger utilisateurMger = UtilisateurMger.getInstance();
-			System.out.println(utilisateurMger.generateHash(mdp));
-			utilisateurMger.verifConnexion(email, mdp);
+			Utilisateur userCo = utilisateurMger.verifConnexion(login, mdp);
 			System.out.println("connexion");
+			request.getSession().setAttribute("utilisateur", userCo);
+			response.sendRedirect("/Projet_ENI-Encheres/accueil");
 		} catch (BLLException e) {
-			System.err.println("Email mot de passe incorrect !!");
+			System.err.println("Login ou mot de passe incorrect !!");
+			request.setAttribute("errorConnexion", "Login ou mot de passe incorrect !!");
+			request.getRequestDispatcher("/WEB-INF/pages/connexion.jsp").forward(request, response);
 		}
 	}
 

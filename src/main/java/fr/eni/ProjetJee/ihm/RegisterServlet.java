@@ -44,27 +44,22 @@ public class RegisterServlet extends HttpServlet {
 		String mdp = req.getParameter("mdp");
 		String confirmation = req.getParameter("confirmation");
 		
-		if(speudo.isEmpty() || nom.isEmpty() || prenom.isEmpty() ||
-				email.isEmpty() || tel.isEmpty() || rue.isEmpty() || 
-				codePostal.isEmpty() || ville.isEmpty() || mdp.isEmpty() ||
-				confirmation.isEmpty()) {
-			// tous les champs doivent être saisis
-		}else {
-			if(mdp.equals(confirmation)) {
-				Utilisateur user = new Utilisateur(0, speudo, nom, prenom, email, tel, rue, codePostal, ville, mdp, 0,false);
-				UtilisateurMger userMgr = new UtilisateurMger();
-				try {
-					userMgr.ajouterUtilisateur(user);
-				} catch (BLLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-				RequestDispatcher rd = req.getRequestDispatcher("/WEB-INF/pages/accueil.jsp");
-				rd.forward(req, resp);
-			}else {
-				// veillez saisir un mot de passe identique
+		
+		if(mdp.equals(confirmation)) {
+			
+			UtilisateurMger userMgr = UtilisateurMger.getInstance();
+			Utilisateur user = new Utilisateur(0, speudo, nom, prenom, email, tel, rue, codePostal, ville, userMgr.generateHash(mdp), 0,false);
+			try {
+				userMgr.ajouterUtilisateur(user);
+			} catch (BLLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
+			
+			RequestDispatcher rd = req.getRequestDispatcher("/WEB-INF/pages/accueil.jsp");
+			rd.forward(req, resp);
+		}else {
+			// veillez saisir un mot de passe identique
 		}
 		
 		

@@ -26,10 +26,12 @@ import java.time.ZoneId;
 public class ArticleVenduDAOSqlServerlmpl implements ArticleVenduDAO {
 	
 	private static final String INSERT = "insert into ARTICLES_VENDUS(nom_article, description,date_debut_encheres,date_fin_encheres,prix_initial,prix_vente,no_utilisateur,no_categorie) values (?, ? ,?,?,?,?,?,?)";
-	private static final String SELECTALL = "Select * from ARTICLES_VENDUS";
+	private static final String SELECTALL = "Select * from ARTICLES_VENDUS WHERE etat_vente='En cours' ORDER BY date_debut_encheres";
 	private static final String SELECT = "Select * from ARTICLES_VENDUS where no_article=?";
 	private static final String SELECTBYUTILISATEUR = "Select * from ARTICLES_VENDUS where no_utilisateur=?";
 	private static final String SELECTBYCATEGORIE = "Select * from ARTICLES_VENDUS where no_categorie=?";
+	private static final String SELECTBYCATEGORIENAME = "Select * from ARTICLES_VENDUS where no_categorie=?";
+	private static final String SELECTBYNAME = "Select * from ARTICLES_VENDUS where no_categorie=?";
 	private static final String DELETE = "DELETE FROM ARTICLES_VENDUS WHERE no_article=?;";
 	private static final String UPDATE = "UPDATE ARTICLES_VENDUS SET nom_article = ?, description = ? , date_debut_encheres = ?, date_fin_encheres = ?, prix_initial = ?, prix_vente = ?, no_utilisateur = ?, no_categorie = ? , no_retrait =? ,photo=? ,etat_vente = ? WHERE no_article=?;";
 
@@ -292,6 +294,18 @@ ArrayList<ArticleVendu> articles =new ArrayList<ArticleVendu>();
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public ArrayList<ArticleVendu> selectByCategorieName(Categorie categorie, String name) throws DALException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ArrayList<ArticleVendu> selectByName(String name) throws DALException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -12,6 +12,8 @@ public interface ArticleVenduDAO {
 	ArrayList<ArticleVendu> select() throws DALException;
 	ArrayList<ArticleVendu> selectByUtilisateur(Utilisateur utilisateur) throws DALException;
 	ArrayList<ArticleVendu> selectByCategorie(Categorie categorie) throws DALException;
+	ArrayList<ArticleVendu> selectByCategorieName(Categorie categorie , String name) throws DALException;
+	ArrayList<ArticleVendu> selectByName(String name) throws DALException;
 	void delete(int id) throws DALException; 
 	void update(ArticleVendu article) throws DALException; 
 }

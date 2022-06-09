@@ -6,6 +6,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import fr.eni.ProjetJee.bll.BLLException;
 import fr.eni.ProjetJee.bll.UtilisateurMger;
@@ -30,15 +31,35 @@ public class AfficherProfilServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
 		try {
-			int idUtilisateur = Integer.parseInt(request.getParameter("user"));
-			UtilisateurMger utilisateurMger = UtilisateurMger.getInstance();
-			Utilisateur user = utilisateurMger.utilisateurById(idUtilisateur);
-			System.out.println(user.toString());
+			try {
+				
+				int idUtilisateur = Integer.parseInt(request.getParameter("user"));
+				HttpSession session = request.getSession(false);
+				
+				UtilisateurMger utilisateurMger = UtilisateurMger.getInstance();
+				Utilisateur user = utilisateurMger.utilisateurById(idUtilisateur);
+				request.setAttribute("user", user);
+				
+				Utilisateur userSession = null;
+				
+				if (session.getAttribute("utilisateur") != null) {
+					userSession = (Utilisateur) session.getAttribute("utilisateur");
+				}
+
+				if (userSession != null && userSession.getNoUtilisateur() == user.getNoUtilisateur() ) {
+					request.setAttribute("owner", true);
+				}
+				
+				request.getRequestDispatcher("/WEB-INF/pages/afficherProfil.jsp").forward(request, response);
+				
+			} catch (NumberFormatException e) {
+				System.err.println("Id de l'utilisateur incorrect");
+				response.sendRedirect("/Projet_ENI-Encheres/accueil");
+			}
 		} catch (BLLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.err.println(e.getMessage());
+			response.sendRedirect("/Projet_ENI-Encheres/accueil");
 		}
 	}
 

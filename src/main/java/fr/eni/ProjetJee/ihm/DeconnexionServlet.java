@@ -31,7 +31,7 @@ public class DeconnexionServlet extends HttpServlet {
 		if (session != null) {
 			session.invalidate();
 		}
-		request.getRequestDispatcher("/WEB-INF/pages/accueilNonCo.jsp").forward(request, response);
+		response.sendRedirect("/Projet_ENI-Encheres/accueil");
 	}
 
 	/**

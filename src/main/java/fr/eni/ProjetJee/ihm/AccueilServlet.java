@@ -20,7 +20,7 @@ import fr.eni.ProjetJee.bo.Categorie;
 /**
  * Servlet implementation class AccueilServlet
  */
-@WebServlet("")
+@WebServlet({"", "/accueil"})
 public class AccueilServlet extends HttpServlet {
 	
 	/**

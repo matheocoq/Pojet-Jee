@@ -21,8 +21,6 @@ import fr.eni.ProjetJee.dal.DALException;
 public class RegisterServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-
-	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
@@ -51,9 +49,8 @@ public class RegisterServlet extends HttpServlet {
 				req.setAttribute("errorInscription", " Inscription incorrect.");
 				req.getRequestDispatcher("/WEB-INF/pages/register.jsp").forward(req, resp);
 			}else {
+				// on verifie si le mdp et la confirmation sont les mêmes
 				if(mdp.equals(confirmation)) {
-					
-					
 					Utilisateur user = new Utilisateur(0, speudo, nom, prenom, email, tel, rue, codePostal, ville, userMgr.generateHash(mdp), 0,false);
 					try {
 						userMgr.ajouterUtilisateur(user);

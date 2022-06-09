@@ -13,7 +13,7 @@ import fr.eni.ProjetJee.bll.UtilisateurMger;
 /**
  * Servlet implementation class ConnexionServlet
  */
-@WebServlet({"", "/Connexion"})
+@WebServlet({"/Connexion"})
 public class ConnexionServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -42,6 +42,7 @@ public class ConnexionServlet extends HttpServlet {
 		System.out.println(mdp);
 		try {
 			UtilisateurMger utilisateurMger = UtilisateurMger.getInstance();
+			System.out.println(utilisateurMger.generateHash(mdp));
 			utilisateurMger.verifConnexion(email, mdp);
 			System.out.println("connexion");
 		} catch (BLLException e) {

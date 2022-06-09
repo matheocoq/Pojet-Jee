@@ -12,8 +12,6 @@ import fr.eni.ProjetJee.bll.BLLException;
 import fr.eni.ProjetJee.bll.UtilisateurMger;
 import fr.eni.ProjetJee.bo.Utilisateur;
 
-import javax.servlet.RequestDispatcher;
-
 
 
 /**
@@ -61,7 +59,7 @@ public class RegisterServlet extends HttpServlet {
 			// on redirectionné vers la page d'acceuil du user connecté
 			resp.sendRedirect("http://localhost:8080/Projet_ENI-Encheres/");
 		}else {
-			// veillez saisir un mot de passe identique
+			// le mot de passe et la confirmation doivent être identiques.
 			System.out.println("mdp et confirmation sont pas identiques!");
 			/*JFrame jFrame = new JFrame();
 	        JOptionPane.showMessageDialog(jFrame, "Veillez saisir un mot de passe correct!");*/

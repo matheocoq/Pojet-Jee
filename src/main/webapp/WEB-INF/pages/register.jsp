@@ -53,7 +53,7 @@
 	<br><br>
 	
 	<input type="submit" value="Créer">
-	<button onclick="window.location.href = 'http://localhost:8080/Projet_ENI-Encheres/accueil';">Annuler</button>
+	<input onclick="window.location.href = 'http://localhost:8080/Projet_ENI-Encheres/accueil';">Annuler</input>
 </form>
 
 </body>

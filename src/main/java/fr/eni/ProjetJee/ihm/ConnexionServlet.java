@@ -13,7 +13,7 @@ import fr.eni.ProjetJee.bll.UtilisateurMger;
 /**
  * Servlet implementation class ConnexionServlet
  */
-@WebServlet({"", "/Connexion"})
+@WebServlet({"/test", "/Connexion"})
 public class ConnexionServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        

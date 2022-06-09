@@ -23,7 +23,7 @@
 <body>
 <%@ include file="header/headerRegister.html"%>
 
-<form action="/recherche/" method="post">
+<form action="http://localhost:8080/Projet_ENI-Encheres/ajouter" method="post">
 
   	<label for="pseudo">Pseudo :  </label>
   	<input type="text" id="pseudo" name="pseudo"> 
@@ -36,9 +36,9 @@
   	<input type="email" id="email" name="email"><br><br>
  
  	<label for="tel">Teléphone :  </label>
-  	<input type="text" id="tel" name="tel"> 
+  	<input type="tel" id="tel" name="tel"> 
   	<label for="rue">Rue :  </label>
-  	<input type="text" id=""rue"" name=""rue""><br><br>
+  	<input type="text" id="rue" name="rue"><br><br>
   	
   	<label for="codePostal">Code postal :  </label>
   	<input type="text" id="codePostal" name="codePostal"> 
@@ -51,8 +51,9 @@
   	<input type="password" id="confirmation" name="confirmation"><br><br>
 	
 	<br><br>
-	<button>Créer</button>
-	<button>Annuler</button>
+	
+	<input type="submit" value="Créer">
+	<button onclick="window.location.href = 'http://localhost:8080/Projet_ENI-Encheres/accueil';">Annuler</button>
 </form>
 
 </body>

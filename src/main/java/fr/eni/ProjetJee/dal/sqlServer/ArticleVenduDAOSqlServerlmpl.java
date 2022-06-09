@@ -387,4 +387,58 @@ ArrayList<ArticleVendu> articles =new ArrayList<ArticleVendu>();
 		return articles;
 	}
 
+	@Override
+	public ArrayList<ArticleVendu> selectByRecherche(int categorie, String name, Utilisateur utilisateur,
+			String checkbox, String ouvertes, String mesEnchere, String mesEnchereReporter, String mesVenteCours,
+			String mesVenteDebutees, String mesVentetTerminees) throws DALException {
+		
+ArrayList<ArticleVendu> articles =new ArrayList<ArticleVendu>();
+		
+		try(Connection conn = ConnectionProvider.getConnection();) {
+			String requete ="SELECT * FROM ARTICLES_VENDUS";
+			PreparedStatement stmt=null;
+			int nb=1;
+			
+			 stmt = conn.prepareStatement(SELECTBYNAME);
+			stmt.setString(1, name);
+			
+			//Executer la requete
+			ResultSet res= stmt.executeQuery();
+			
+			//Recupérer l'identifiant créé
+			while(res.next()) {
+				 LocalDateTime date_debut_encheres = res.getDate("date_debut_encheres").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+				 LocalDateTime date_fin_encheres = res.getDate("date_fin_encheres").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+				 ArticleVendu articlevendu = new ArticleVendu(res.getInt("no_article"),res.getString("nom_article"),res.getString("description"),date_debut_encheres,date_fin_encheres,res.getString("etat_vente"),res.getInt("prix_initial"),res.getInt("prix_vente"),res.getString("photo"),null,null,null);
+				
+				
+				UtilisateursDAO daoUtilisateur=(UtilisateursDAO) DAOFactory.getDAOUtilisateur();
+				Utilisateur utilisateure = daoUtilisateur.selectById(res.getInt("no_utilisateur"));
+				articlevendu.setUtilisateur(utilisateure);
+				
+				CategorieDAO daoCategorie=(CategorieDAO) DAOFactory.getDAOCategorie();
+				Categorie categoriee = daoCategorie.selectById(res.getInt("no_categorie"));
+				articlevendu.setCategorie(categoriee);
+				if(res.getInt("no_retrait")>=0) {
+					RetraitDAO daoRetrait=(RetraitDAO) DAOFactory.getDAORetrait();
+					Retrait retrait = daoRetrait.selectById(res.getInt("no_retrait"));
+					articlevendu.setLieuRetrait(retrait);
+				}
+				articles.add(articlevendu);
+			}
+			
+				
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		// TODO Auto-generated method stub
+		return articles;
+		
+	}
+
+	
+
 }

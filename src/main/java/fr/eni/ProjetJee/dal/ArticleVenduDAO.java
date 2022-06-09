@@ -13,6 +13,7 @@ public interface ArticleVenduDAO {
 	ArrayList<ArticleVendu> selectByUtilisateur(Utilisateur utilisateur) throws DALException;
 	ArrayList<ArticleVendu> selectByCategorie(int categorie) throws DALException;
 	ArrayList<ArticleVendu> selectByCategorieName(int categorie , String name) throws DALException;
+	ArrayList<ArticleVendu> selectByRecherche(int categorie , String name , Utilisateur utilisateur ,String checkbox , String ouvertes , String mesEnchere,String mesEnchereReporter,String mesVenteCours,String mesVenteDebutees,String mesVentetTerminees) throws DALException;
 	ArrayList<ArticleVendu> selectByName(String name) throws DALException;
 	void delete(int id) throws DALException; 
 	void update(ArticleVendu article) throws DALException; 

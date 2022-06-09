@@ -130,28 +130,11 @@ public class ArticleVenduMger {
 		
 	}
 	
-	public ArrayList<ArticleVendu> filtreCo(String categorie,String nom) throws BLLException{
-		if(categorie.equals("Toute")) {
-			if(nom.equals("")) {
-				System.out.println("je passe 1");
-				return allArticleVendu();
-			}
-			else {
-				System.out.println("je passe 2");
-				return articleVenduByName("%"+nom+"%");
-			}
-		}
-		else {
-			if(nom.equals("")) {
-				System.out.println("je passe 3");
-				return articleVenduByCategorie(Integer.parseInt(categorie));
-			}
-			else {
-				System.out.println("je passe 4");
-				return articleVenduByCategorieName(Integer.parseInt(categorie), "%"+nom+"%");
-			}
-		}
-		
+	public ArrayList<ArticleVendu> filtreCo(String categorie , String name , Utilisateur utilisateur ,String checkbox , String ouvertes , String mesEnchere,String mesEnchereReporter,String mesVenteCours,String mesVenteDebutees,String mesVentetTerminees) throws NumberFormatException, DALException{
+			
+				
+			return articleVenduDAO.selectByRecherche(Integer.parseInt(categorie),name ,utilisateur ,checkbox ,ouvertes ,mesEnchere,mesEnchereReporter,mesVenteCours,mesVenteDebutees,mesVentetTerminees);
+			
 		
 	}
 

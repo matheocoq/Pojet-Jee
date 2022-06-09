@@ -4,8 +4,8 @@
 <%@page import="java.util.ArrayList"%>
 <span>Liste des Enchères</span>
 <span>Filtre :</span>
-<form action="/Projet_ENI-Encheres/" method="post">
-<input name="recherche" type="text">
+<form action="/Projet_ENI-Encheres/" method="get">
+<input name="nom" type="text">
 <label for="categorie-select">Categorie:</label>
 <select name="categorie" id="categorie-select">
     <option value="Toute">Toute</option>
@@ -18,6 +18,42 @@
 		}
     %>
 </select>
+<div>
+      <input type="radio" id="radioAchat" name="radioAchat" value="achat" checked>
+      <label for="radioAchat">Achat</label>
+      <div>
+      	<div>
+	      	<input type="checkbox" id="ouvertes" name="ouvertes" checked>
+	      	<label for="ouvertes">Enchère ouvertes</label>
+      	</div>
+      	<div>
+	      	<input type="checkbox" id="mesEnchere" name="mesEnchere">
+	      	<label for="mesEnchere">Mes enchères</label>
+      	</div>
+      	<div>
+	      	<input type="checkbox" id="mesEnchereReporter" name="mesEnchereReporter">
+	      	<label for="mesEnchereReporter">Mes enchères remportées</label>
+  	  	</div>
+  	  </div>
+
+      <input type="radio" id="radioVente" name="radioAchat" value="vente">
+      <label for="radioVente">Mes Ventes</label>
+      
+      <div>
+      	<div>
+	      	<input type="checkbox" id="mesVenteCours" name="mesVenteCours">
+	      	<label for="ouvertes">Mes ventes en cours</label>
+      	</div>
+      	<div>
+	      	<input type="checkbox" id="mesVenteDebutees" name="mesVenteDebutees">
+	      	<label for="mesVenteDebutees">Mes ventes non débutées</label>
+      	</div>
+      	<div>
+	      	<input type="checkbox" id="mesVentetTerminees" name="mesVentetTerminees">
+	      	<label for="mesVentetTerminees">Mes ventes terminées</label>
+  	  	</div>
+  	  </div>
+</div>
 <button>Rechercher</button>
 </form>
 <div class="fiche-produits">

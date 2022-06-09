@@ -6,6 +6,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import fr.eni.ProjetJee.bll.BLLException;
 import fr.eni.ProjetJee.bll.UtilisateurMger;
@@ -41,14 +42,16 @@ public class ConnexionServlet extends HttpServlet {
 		String login = request.getParameter("login");
 		String mdp = request.getParameter("mdp");
 		try {
+			HttpSession session = request.getSession();
+			session.setMaxInactiveInterval(10*60);
 			UtilisateurMger utilisateurMger = UtilisateurMger.getInstance();
 			Utilisateur userCo = utilisateurMger.verifConnexion(login, mdp);
 			System.out.println("connexion");
-			request.getSession().setAttribute("utilisateur", userCo);
+			session.setAttribute("utilisateur", userCo);
 			response.sendRedirect("/Projet_ENI-Encheres/accueil");
 		} catch (BLLException e) {
 			System.err.println("Login ou mot de passe incorrect !!");
-			request.setAttribute("errorConnexion", "Login ou mot de passe incorrect !!");
+			request.setAttribute("errorConnexion", true);
 			request.getRequestDispatcher("/WEB-INF/pages/connexion.jsp").forward(request, response);
 		}
 	}

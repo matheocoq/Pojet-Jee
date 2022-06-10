@@ -19,6 +19,7 @@ public class UtilisateurDAOSqlServerImpl implements UtilisateursDAO {
 	private static final String SELECT_ALL = "SELECT * FROM UTILISATEURS";
 	private static final String UPDATE = "UPDATE UTILISATEURS set pseudo = ?, nom = ?, prenom = ?, email = ?, telephone = ?, rue = ?, code_postal = ?, ville = ?, mot_de_passe = ?, credit = ?, administrateur = ?, active = ?";
 	private static final String DELETE = "DELETE FROM UTILISATEURS WHERE noUtilisateur = ?";
+	private static final String CHECK_UNIQUE = "SELECT pseudo,email,telephone FROM UTILISATEURS WHERE pseudo = ? or email=? or telephone=?";
 
 	@Override
 	public void insert(Utilisateur utilisateur) throws DALException {
@@ -164,6 +165,32 @@ public class UtilisateurDAOSqlServerImpl implements UtilisateursDAO {
 		} catch (Exception e) {
 			throw new DALException("Utilisateur selectByEmail Error ", e);
 		}
+	}
+
+	@Override
+	public boolean checkPseudoEmailTel(String speudo, String email, String tel) throws DALException {
+		boolean isDuplicated = false; 
+		try (Connection conn = ConnectionProvider.getConnection();) {
+			PreparedStatement stmt = conn.prepareStatement(CHECK_UNIQUE);
+			
+		
+			//Préparer la requete
+			stmt.setString(1, speudo);
+			stmt.setString(2, email);
+			stmt.setString(3, tel);
+			
+			
+			
+			//Executer la requete
+			ResultSet rs = stmt.executeQuery();
+			if(rs.next()) {
+				isDuplicated = true;
+			}
+			
+		} catch (Exception e) {
+			throw new DALException("check unique Error ", e);
+		}		
+		return isDuplicated;
 	}
 
 }

@@ -1,15 +1,21 @@
+<%@page import="org.apache.jasper.tagplugins.jstl.core.ForEach"%>
 <%@ page import="fr.eni.ProjetJee.bo.Utilisateur"%>
+<%@ page import="fr.eni.ProjetJee.bo.Categorie"%>
+<%@ page import="java.util.List"%>
 <jsp:include page="header/headerConnecter.jsp" />
-<div class="container">
 
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
+<div class="container">
 	<div class="row">
 		<div class="col-3">
 			<img alt="" src="resources/imgTestNouvelleVente.jpg">
 			<p>IMAGE</p>
 		</div>
 		<div class="col-9">
+		
 			<h5 style="text-align: center">Nouvelle vente</h5>
-			<form action="" method="post"">
+			<form action="" method="post">
 				<div class="form-group mt-3">
 					<label for="article">Article</label>
 					<input type="text" class="form-control" name="article" id="article" >
@@ -24,10 +30,11 @@
 					<label for="categorie">Catégorie</label>
 					<select class="form-select" name="categorie" id="categorie">
 					  <option selected></option>
-					  <option value="1">Informatique</option>
-					  <option value="2">Ameublement</option>
-					  <option value="3">Sport&Loisir</option>
-					  <option value="4">Vetement</option>
+					  
+					  <c:forEach var="categorie" items="${ categorieList }">
+					  	<option value="${ categorie.getNoCategorie() }">${ categorie.getLibelle() }</option>
+					  </c:forEach>
+					  
 					</select>
 				</div>
 				

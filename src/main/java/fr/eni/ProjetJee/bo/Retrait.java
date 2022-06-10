@@ -8,8 +8,6 @@ public class Retrait {
 	private String codePostal;
 	private String ville;
 	
-	
-	
 	public Retrait(String rue, String codePostal, String ville) {
 		this.rue = rue;
 		this.codePostal = codePostal;
@@ -23,7 +21,6 @@ public class Retrait {
 		this.ville = ville;
 	}
 
-	
 	public Retrait(int no_article, String rue, String codePostal, String ville) {
 		super();
 		this.no_article = no_article;

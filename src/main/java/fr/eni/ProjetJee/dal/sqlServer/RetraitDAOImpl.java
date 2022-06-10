@@ -14,7 +14,7 @@ import fr.eni.ProjetJee.dal.RetraitDAO;
 
 public class RetraitDAOImpl implements RetraitDAO{
 	
-	private static final String INSERT = "insert into RETRAITS(no_retrait,no_article, rue,code_postal,ville) values (?, ?,?,?)";
+	private static final String INSERT = "insert into RETRAITS(no_article, rue, code_postal, ville) values (?, ?, ?, ?)";
 	private static final String ALL = "select * from RETRAITS";
 	private static final String UPDATE = "UPDATE RETRAITS SET no_article=?,rue=?,code_postal=?,ville=? where no_retrait=?";
 	private final String DELETE = "DELETE FROM RETRAITS WHERE no_retrait=?";
@@ -25,20 +25,20 @@ public class RetraitDAOImpl implements RetraitDAO{
 		
 		Connection conn = null;
 		try {
-			//Récupérer une connexion
+			//Rï¿½cupï¿½rer une connexion
 			conn = ConnectionProvider.getConnection();
 
-			//Préparer la requete
+			//Prï¿½parer la requete
 			PreparedStatement stmt = conn.prepareStatement(INSERT, PreparedStatement.RETURN_GENERATED_KEYS);
-			stmt.setInt(2, retrait.getNo_article());
-			stmt.setString(3, retrait.getRue());
-			stmt.setString(4, retrait.getCodePostal());
-			stmt.setString(5,retrait.getVille());
+			stmt.setInt(1, retrait.getNo_article());
+			stmt.setString(2, retrait.getRue());
+			stmt.setString(3, retrait.getCodePostal());
+			stmt.setString(4,retrait.getVille());
 			
 			//Executer la requete
 			stmt.executeUpdate();
 			
-			//Recupérer l'identifiant créé
+			//Recupï¿½rer l'identifiant crï¿½ï¿½
 			ResultSet rs = stmt.getGeneratedKeys();
 			if(rs.next()) {
 				retrait.setNoRetrait(rs.getInt(1));
@@ -69,17 +69,17 @@ public class RetraitDAOImpl implements RetraitDAO{
 		PreparedStatement stmt = null;
 		
 		try {
-			//Ouverture de la connexion à la base
+			//Ouverture de la connexion ï¿½ la base
 			
 			conn = ConnectionProvider.getConnection();
 			
-			//Execution de la requête
+			//Execution de la requï¿½te
 			stmt = conn.prepareStatement(selectID);
 			stmt.setInt(1, no_retrait);
 			
 			ResultSet rs = stmt.executeQuery();
 			
-			//Traitement du résultat
+			//Traitement du rï¿½sultat
 			if (rs.next()) {
 				retrait = new Retrait(rs.getInt("no_retrait"), rs.getInt("no_article"),rs.getString("rue"), rs.getString("code_postal"), rs.getString("ville"));
 			}
@@ -87,7 +87,7 @@ public class RetraitDAOImpl implements RetraitDAO{
 		} catch (SQLException e) {
 			throw new DALException("Selection par ID impossible");
 		} finally {
-			//Fermmeture de la connexion à la base
+			//Fermmeture de la connexion ï¿½ la base
 			if(conn!=null) {
 				try {
 					conn.close();
@@ -114,10 +114,10 @@ public class RetraitDAOImpl implements RetraitDAO{
 		List<Retrait> allRetraits = new ArrayList<>();
 		Connection conn = null;
 		try {
-			//Récupérer une connexion
+			//Rï¿½cupï¿½rer une connexion
 			conn = ConnectionProvider.getConnection();
 
-			//Préparer la requete
+			//Prï¿½parer la requete
 			PreparedStatement stmt = conn.prepareStatement(ALL);
 			
 			
@@ -153,13 +153,13 @@ public class RetraitDAOImpl implements RetraitDAO{
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		try {
-			//Récupérer une connexion
+			//Rï¿½cupï¿½rer une connexion
 			conn = ConnectionProvider.getConnection();
 
-			//Préparer la requete
+			//Prï¿½parer la requete
 			stmt = conn.prepareStatement(ALL);
 			
-			//Execution de la requête
+			//Execution de la requï¿½te
 			stmt = conn.prepareStatement(UPDATE);
 			stmt.setInt(1,retrait.getNo_article());
 			stmt.setString(2, retrait.getRue());
@@ -170,7 +170,7 @@ public class RetraitDAOImpl implements RetraitDAO{
 			stmt.executeUpdate();
 			
 		} catch (SQLException e) {
-			throw new DALException("Mise à jour Impossible", e);
+			throw new DALException("Mise ï¿½ jour Impossible", e);
 		} finally {
 			if(conn!=null) {
 				try {
@@ -201,7 +201,7 @@ public class RetraitDAOImpl implements RetraitDAO{
 		try {
 			conn = ConnectionProvider.getConnection();
 			
-			//Execution de la requête
+			//Execution de la requï¿½te
 			stmt = conn.prepareStatement(DELETE);
 			stmt.setInt(1, no_retrait);
 			

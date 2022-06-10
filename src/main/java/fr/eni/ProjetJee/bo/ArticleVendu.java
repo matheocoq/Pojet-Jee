@@ -33,6 +33,22 @@ public class ArticleVendu {
 		this.categorie = categorie;
 	}
 	
+	public ArticleVendu(String nomArticle, String description, LocalDateTime dateDebutEncheres,
+			LocalDateTime dateFinEncheres, String etatVente,int miseAPrix,int prixVente, String photo, Utilisateur utilisateur,
+			Retrait lieuRetrait, Categorie categorie) {
+		this.nomArticle = nomArticle;
+		this.description = description;
+		this.dateDebutEncheres = dateDebutEncheres;
+		this.dateFinEncheres = dateFinEncheres;
+		this.miseAPrix = miseAPrix;
+		this.prixDeVente = prixVente;
+		this.etatVente = etatVente;
+		this.photo = photo;
+		this.Utilisateur = utilisateur;
+		this.lieuRetrait = lieuRetrait;
+		this.categorie = categorie;
+	}
+	
 
 	public int getNoArticle() {
 		return noArticle;

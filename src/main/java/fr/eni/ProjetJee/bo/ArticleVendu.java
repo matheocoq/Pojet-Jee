@@ -15,10 +15,11 @@ public class ArticleVendu {
 	private Utilisateur Utilisateur;
 	private Retrait lieuRetrait;
 	private Categorie categorie;
+	private Utilisateur gagnant;
 	
 	public ArticleVendu(int noArticle, String nomArticle, String description, LocalDateTime dateDebutEncheres,
 			LocalDateTime dateFinEncheres, String etatVente,int miseAPrix,int prixVente, String photo, Utilisateur utilisateur,
-			Retrait lieuRetrait, Categorie categorie) {
+			Retrait lieuRetrait, Categorie categorie , Utilisateur gagnant) {
 		this.noArticle = noArticle;
 		this.nomArticle = nomArticle;
 		this.description = description;
@@ -31,6 +32,7 @@ public class ArticleVendu {
 		this.Utilisateur = utilisateur;
 		this.lieuRetrait = lieuRetrait;
 		this.categorie = categorie;
+		this.gagnant = gagnant;
 	}
 	
 
@@ -129,6 +131,18 @@ public class ArticleVendu {
 	public void setCategorie(Categorie categorie) {
 		this.categorie = categorie;
 	}
+	
+	
+
+	public Utilisateur getGagnant() {
+		return gagnant;
+	}
+
+
+	public void setGagnant(Utilisateur gagnant) {
+		this.gagnant = gagnant;
+	}
+
 
 	@Override
 	public String toString() {

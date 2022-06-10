@@ -18,6 +18,7 @@ import fr.eni.ProjetJee.bll.CategorieMger;
 import fr.eni.ProjetJee.bo.ArticleVendu;
 import fr.eni.ProjetJee.bo.Categorie;
 import fr.eni.ProjetJee.bo.Utilisateur;
+import fr.eni.ProjetJee.dal.DALException;
 
 /**
  * Servlet implementation class AccueilServlet
@@ -38,19 +39,16 @@ public class AccueilServlet extends HttpServlet {
 			Object seesion = request.getSession().getAttribute("utilisateur");
 			if(seesion!=null) {
 				if(request.getParameter("rechercher")!=null) {
-					String nom= request.getParameter("nom");
+					String name= request.getParameter("nom");
 					String categorie= request.getParameter("categorie");
-					String nom= request.getParameter("nom");
-					String categorie= request.getParameter("categorie");
-					String nom= request.getParameter("nom");
-					String categorie= request.getParameter("categorie");
-					String nom= request.getParameter("nom");
-					String categorie= request.getParameter("categorie");
-					String nom= request.getParameter("nom");
-					String categorie= request.getParameter("categorie");
-					String nom= request.getParameter("nom");
-					String categorie= request.getParameter("categorie");
-					articles=articleVenduMger.filtreCo(categorie ,name ,utilisateur ,checkbox ,ouvertes ,mesEnchere,mesEnchereReporter,mesVenteCours,mesVenteDebutees,mesVentetTerminees);
+					String checkbox= request.getParameter("radioAchat");
+					String ouvertes= request.getParameter("ouvertes");
+					String mesEnchere= request.getParameter("mesEnchere");
+					String mesEnchereReporter= request.getParameter("mesEnchereReporter");
+					String mesVenteCours= request.getParameter("mesVenteCours");
+					String mesVenteDebutees= request.getParameter("mesVenteDebutees");
+					String mesVentetTerminees= request.getParameter("mesVentetTerminees");
+					articles=articleVenduMger.filtreCo(categorie ,name ,(Utilisateur) seesion ,checkbox ,ouvertes ,mesEnchere,mesEnchereReporter,mesVenteCours,mesVenteDebutees,mesVentetTerminees);
 				}
 				else {
 					articles=articleVenduMger.allArticleVendu();
@@ -74,6 +72,12 @@ public class AccueilServlet extends HttpServlet {
 				request.getRequestDispatcher("WEB-INF/pages/accueilNonCo.jsp").forward(request, response);
 			}
 		} catch (BLLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (DALException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

@@ -7,22 +7,22 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.eni.ProjetJee.bo.Retrait;
+import fr.eni.ProjetJee.bo.Categorie;
+import fr.eni.ProjetJee.dal.CategorieDAO;
 import fr.eni.ProjetJee.dal.ConnectionProvider;
 import fr.eni.ProjetJee.dal.DALException;
-import fr.eni.ProjetJee.dal.RetraitDAO;
 
-public class RetraitDAOImpl implements RetraitDAO{
+public class CategorieDAOImpl implements CategorieDAO{
 	
-	private static final String INSERT = "insert into RETRAITS(no_retrait,no_article, rue,code_postal,ville) values (?, ?,?,?)";
-	private static final String ALL = "select * from RETRAITS";
-	private static final String UPDATE = "UPDATE RETRAITS SET no_article=?,rue=?,code_postal=?,ville=? where no_retrait=?";
-	private final String DELETE = "DELETE FROM RETRAITS WHERE no_retrait=?";
-	private final String selectID = "Select * from RETRAITS where no_retrait=?";
+	private static final String INSERT = "insert into CATEGORIES(libelle) values (?)";
+	private final String selectID = "Select * from CATEGORIES where no_categorie=?";
+	private static final String ALL = "SELECT * FROM CATEGORIES";
+	private static final String UPDATE = "UPDATE CATEGORIES SET libelle=? where no_categorie=?";
+	private final String DELETE = "DELETE FROM CATEGORIES WHERE no_categorie=?";
 	
+
 	@Override
-	public void insert(Retrait retrait) throws DALException {
-		
+	public void insert(Categorie cat) throws DALException {
 		Connection conn = null;
 		try {
 			//R�cup�rer une connexion
@@ -30,18 +30,14 @@ public class RetraitDAOImpl implements RetraitDAO{
 
 			//Pr�parer la requete
 			PreparedStatement stmt = conn.prepareStatement(INSERT, PreparedStatement.RETURN_GENERATED_KEYS);
-			stmt.setInt(2, retrait.getNo_article());
-			stmt.setString(3, retrait.getRue());
-			stmt.setString(4, retrait.getCodePostal());
-			stmt.setString(5,retrait.getVille());
-			
+			stmt.setString(1, cat.getLibelle());
 			//Executer la requete
 			stmt.executeUpdate();
 			
 			//Recup�rer l'identifiant cr��
 			ResultSet rs = stmt.getGeneratedKeys();
 			if(rs.next()) {
-				retrait.setNoRetrait(rs.getInt(1));
+				cat.setNoCategorie(rs.getInt(1));
 			}
 			
 		} catch (SQLException e) {
@@ -60,11 +56,12 @@ public class RetraitDAOImpl implements RetraitDAO{
 				}
 			}
 		}
+		
 	}
 
 	@Override
-	public Retrait selectById(Integer no_retrait) throws DALException {
-		Retrait retrait = null;
+	public Categorie selectById(Integer no_categorie) throws DALException {
+		Categorie categorie = null;
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		
@@ -75,13 +72,13 @@ public class RetraitDAOImpl implements RetraitDAO{
 			
 			//Execution de la requ�te
 			stmt = conn.prepareStatement(selectID);
-			stmt.setInt(1, no_retrait);
+			stmt.setInt(1, no_categorie);
 			
 			ResultSet rs = stmt.executeQuery();
 			
 			//Traitement du r�sultat
 			if (rs.next()) {
-				retrait = new Retrait(rs.getInt("no_retrait"), rs.getInt("no_article"),rs.getString("rue"), rs.getString("code_postal"), rs.getString("ville"));
+				categorie = new Categorie(rs.getInt("no_categorie"), rs.getString("libelle"));
 			}
 			
 		} catch (SQLException e) {
@@ -105,13 +102,12 @@ public class RetraitDAOImpl implements RetraitDAO{
 				}
 			}
 		}
-		return retrait;
-
+		return categorie;
 	}
 
 	@Override
-	public List<Retrait> selectAll() throws DALException {
-		List<Retrait> allRetraits = new ArrayList<>();
+	public List<Categorie> selectAll() throws DALException {
+		List<Categorie> allCategories = new ArrayList<>();
 		Connection conn = null;
 		try {
 			//R�cup�rer une connexion
@@ -125,9 +121,9 @@ public class RetraitDAOImpl implements RetraitDAO{
 			ResultSet rs = stmt.executeQuery();
 		    while ( rs.next() )
 		    {
-		      Retrait retrait = new Retrait(rs.getInt("no_retrait"),rs.getInt("no_article"), rs.getString("rue"), rs.getString("code_postal"), rs.getString("ville"));
+		      Categorie cat = new Categorie(rs.getInt("no_categorie"), rs.getString("libelle"));
 		      
-		      allRetraits.add(retrait);
+		      allCategories.add(cat);
 		    }
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -145,11 +141,11 @@ public class RetraitDAOImpl implements RetraitDAO{
 				}
 			}
 		}
-		return allRetraits;
+		return allCategories;
 	}
 
 	@Override
-	public void update(Retrait retrait) throws DALException {
+	public void update(Categorie cat) throws DALException {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		try {
@@ -161,11 +157,8 @@ public class RetraitDAOImpl implements RetraitDAO{
 			
 			//Execution de la requ�te
 			stmt = conn.prepareStatement(UPDATE);
-			stmt.setInt(1,retrait.getNo_article());
-			stmt.setString(2, retrait.getRue());
-			stmt.setString(3, retrait.getCodePostal());
-			stmt.setString(4, retrait.getVille());
-			stmt.setInt(5, retrait.getNoRetrait());
+			stmt.setInt(1,cat.getNoCategorie() );
+			stmt.setString(2, cat.getLibelle());
 			
 			stmt.executeUpdate();
 			
@@ -188,28 +181,22 @@ public class RetraitDAOImpl implements RetraitDAO{
 					e.printStackTrace();
 				}
 			}
-		}
-		
-		
+		}	
 	}
 
 	@Override
-	public void delete(Integer no_retrait) throws DALException {
+	public void delete(Integer no_categorie) throws DALException {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		
 		try {
 			conn = ConnectionProvider.getConnection();
-			
 			//Execution de la requ�te
 			stmt = conn.prepareStatement(DELETE);
-			stmt.setInt(1, no_retrait);
-			
+			stmt.setInt(1, no_categorie);
 			stmt.executeUpdate();
-			
-			
 		} catch (SQLException e) {
-			throw new DALException("Suppression Impossible");
+			throw new DALException("Suppression de la cat�gorie "+no_categorie+" est impossible");
 		} finally {
 			if(conn!=null) {
 				try {

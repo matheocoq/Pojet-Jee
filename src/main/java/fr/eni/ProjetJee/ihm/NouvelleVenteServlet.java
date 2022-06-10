@@ -1,6 +1,9 @@
 package fr.eni.ProjetJee.ihm;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -26,6 +29,9 @@ public class NouvelleVenteServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("YYYY-MM-dd");
+		LocalDateTime now = LocalDateTime.now();
+		request.setAttribute("dateNow", dtf.format(now));
 		request.getRequestDispatcher("/WEB-INF/pages/nouvelleVente.jsp").forward(request, response);
 	}
 

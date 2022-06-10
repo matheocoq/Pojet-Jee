@@ -8,7 +8,7 @@
 <input name="nom" type="text">
 <label for="categorie-select">Categorie:</label>
 <select name="categorie" id="categorie-select">
-    <option value="Toute">Toute</option>
+    <option value="0">Toute</option>
     <%
 		ArrayList<Categorie> categories= (ArrayList<Categorie>)request.getAttribute("categories");
 		for (Categorie catgorie : categories) {
@@ -64,7 +64,7 @@
 		<div class="article">
 		<img alt="" src="<%= article.getPhoto() %>">
 		<span><%= article.getNomArticle() %></span>
-		<span>Prix : <%= article.getMiseAPrix() %></span>
+		<span>Prix : <%= article.getPrixDeVente() %></span>
 		<span>Fin de l'enchère: <%= article.getDateFinEncheres() %></span>
 		<span>Vendeur : <%= article.getUtilisateur().getPseudo() %></span>
 		</div>

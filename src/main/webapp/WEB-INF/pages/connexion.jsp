@@ -2,7 +2,7 @@
 	<div class="container">
 		<form action="" method="post">
 		
-			${not empty errorConnexion ? "<div class='alert alert-danger mb-4' role='alert'>Identifiant ou Mots de passe incorrect !!</div>" : null }
+			${not empty errorConnexion ? "<div class='alert alert-danger mb-4' role='alert'>Authentification incorrect !!</div>" : null}
 		
 			<div class="form-group">
 				<label>Identifiant</label>
@@ -25,6 +25,6 @@
 				
 			<button class="btn btn-primary my-3">Connexion</button>
 		</form>
-		<a class="text-decoration-none text-primary fw-bold" href="/Projet_ENI-Encheres/register">Crée un compte</a>
+		<a class="text-decoration-none text-secondary fw-bold" href="/Projet_ENI-Encheres/register">Crée un compte</a>
 	</div>
 <jsp:include page="footer/footer.jsp" />

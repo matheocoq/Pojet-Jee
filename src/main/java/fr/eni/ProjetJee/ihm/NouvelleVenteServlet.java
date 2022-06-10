@@ -1,24 +1,26 @@
 package fr.eni.ProjetJee.ihm;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
- * Servlet implementation class DeconnexionServlet
+ * Servlet implementation class NouvelleVenteServlet
  */
-@WebServlet("/Deconnexion")
-public class DeconnexionServlet extends HttpServlet {
+@WebServlet("/NouvelleVente")
+public class NouvelleVenteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public DeconnexionServlet() {
+    public NouvelleVenteServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -27,11 +29,10 @@ public class DeconnexionServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession(false);
-		if (session != null && session.getAttribute("utilisateur") != null) {
-			session.invalidate();
-		}
-		response.sendRedirect("/Projet_ENI-Encheres/accueil");
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("YYYY-MM-dd");
+		LocalDateTime now = LocalDateTime.now();
+		request.setAttribute("dateNow", dtf.format(now));
+		request.getRequestDispatcher("/WEB-INF/pages/nouvelleVente.jsp").forward(request, response);
 	}
 
 	/**

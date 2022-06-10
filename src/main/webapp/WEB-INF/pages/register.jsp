@@ -30,9 +30,9 @@
   		<input type="text" id="ville" name="ville"  required="required"><br><br>
 	
 		<label for="mdp">Mot de passe :  </label>
-  		<input type="password" id="mdp" name="mdp"  required="required"> 
+  		<input type="password" id="mdp" name="mdp"  pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_=+-]).{12,}$" title="Doit contenir au moins une lettre majuscule,une minscule et au moins un chiffre, un caractère spécial et au minimum 12 caractères" required="required"> 
   		<label for="confirmation">Confirmation :  </label>
-  		<input type="password" id="confirmation" name="confirmation"  required="required"><br><br>
+  		<input type="password" id="confirmation" name="confirmation" pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_=+-]).{12,}$" title="Doit contenir au moins une lettre majuscule,une minsculeet au moins un chiffre, un caractère spécial et au minimum 12 caractères" required="required"><br><br>
 	
 		<br><br>
 	

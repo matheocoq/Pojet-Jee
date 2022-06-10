@@ -6,25 +6,21 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.swing.*;
 
 import fr.eni.ProjetJee.bll.BLLException;
 import fr.eni.ProjetJee.bll.UtilisateurMger;
 import fr.eni.ProjetJee.bo.Utilisateur;
-
-import javax.servlet.RequestDispatcher;
+import fr.eni.ProjetJee.dal.DALException;
 
 
 
 /**
  * Servlet implementation class RegisterServer
  */
-@WebServlet({"/register","/ajouter"})
+@WebServlet({"/inscription","/ajouter"})
 public class RegisterServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-
-	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
@@ -46,27 +42,39 @@ public class RegisterServlet extends HttpServlet {
 		String confirmation = req.getParameter("confirmation");
 		
 		
-		if(mdp.equals(confirmation)) {
-			
-			UtilisateurMger userMgr = UtilisateurMger.getInstance();
-			Utilisateur user = new Utilisateur(0, speudo, nom, prenom, email, tel, rue, codePostal, ville, userMgr.generateHash(mdp), 0,false);
-			try {
-				userMgr.ajouterUtilisateur(user);
-				req.getSession().setAttribute("utilisateur", user);
-			} catch (BLLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		UtilisateurMger userMgr = UtilisateurMger.getInstance();
+		try {
+			// on verifie la longueur du numero de tel et si le pseudo, l'email ou telephone existe déjà dans la base de données.
+			if(tel.length()<10 || userMgr.checkPseudoEmailTel(speudo,email,tel)) {
+				req.setAttribute("errorInscription", " Inscription incorrect.");
+				req.getRequestDispatcher("/WEB-INF/pages/register.jsp").forward(req, resp);
+			}else {
+				// on verifie si le mdp et la confirmation sont les mêmes
+				if(mdp.equals(confirmation)) {
+					Utilisateur user = new Utilisateur(0, speudo, nom, prenom, email, tel, rue, codePostal, ville, userMgr.generateHash(mdp), 0,false);
+					try {
+						userMgr.ajouterUtilisateur(user);
+						req.getSession().setAttribute("utilisateur", user);
+					} catch (BLLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+					// on redirectionné vers la page d'acceuil du user connecté
+					resp.sendRedirect("http://localhost:8080/Projet_ENI-Encheres/");
+				}else {
+					// le mot de passe et la confirmation doivent être identiques.
+					System.out.println("mdp et confirmation sont pas identiques!");
+					req.setAttribute("errorInscription", " Inscription incorrect.");
+					req.getRequestDispatcher("/WEB-INF/pages/register.jsp").forward(req, resp);
+				}
 			}
-			
-			// on redirectionné vers la page d'acceuil du user connecté
-			resp.sendRedirect("http://localhost:8080/Projet_ENI-Encheres/");
-		}else {
-			// veillez saisir un mot de passe identique
-			System.out.println("mdp et confirmation sont pas identiques!");
-			/*JFrame jFrame = new JFrame();
-	        JOptionPane.showMessageDialog(jFrame, "Veillez saisir un mot de passe correct!");*/
-	        
+		} catch (DALException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
+		
+		
 		
 		
 	}

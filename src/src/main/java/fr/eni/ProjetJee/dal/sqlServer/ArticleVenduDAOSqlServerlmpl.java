@@ -4,9 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.sql.Date;
+import java.util.Date;
 
 import fr.eni.ProjetJee.bo.ArticleVendu;
 import fr.eni.ProjetJee.bo.Categorie;
@@ -43,10 +42,10 @@ public class ArticleVenduDAOSqlServerlmpl implements ArticleVenduDAO {
 			PreparedStatement stmt = conn.prepareStatement(INSERT, PreparedStatement.RETURN_GENERATED_KEYS);
 			stmt.setString(1, article.getNomArticle());
 			stmt.setString(2, article.getDescription());
-			Timestamp date1 = Timestamp.valueOf(article.getDateDebutEncheres());
-			stmt.setTimestamp(3, date1);
-			Timestamp date2 = Timestamp.valueOf(article.getDateFinEncheres());
-			stmt.setTimestamp(4,date2);
+			 Date date1 = Date.from(article.getDateDebutEncheres().atZone(ZoneId.systemDefault()).toInstant());
+			stmt.setDate(3, (java.sql.Date) date1);
+			 Date date2 = Date.from(article.getDateFinEncheres().atZone(ZoneId.systemDefault()).toInstant());
+			stmt.setDate(4, (java.sql.Date) date2);
 			stmt.setInt(5, article.getMiseAPrix());
 			stmt.setInt(6, article.getPrixDeVente());
 			stmt.setInt(7, article.getUtilisateur().getNoUtilisateur());
@@ -86,7 +85,8 @@ public class ArticleVenduDAOSqlServerlmpl implements ArticleVenduDAO {
 				
 				 LocalDateTime date_debut_encheres = res.getDate("date_debut_encheres").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
 				 LocalDateTime date_fin_encheres = res.getDate("date_fin_encheres").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-				 articlevendu = new ArticleVendu(res.getInt("no_article"),res.getString("nom_article"),res.getString("description"),date_debut_encheres,date_fin_encheres,res.getString("etat_vente"),res.getInt("prix_initial"),res.getInt("prix_vente"),res.getString("photo"),null,null,null,null);				
+				 articlevendu = new ArticleVendu(res.getInt("no_article"),res.getString("nom_article"),res.getString("description"),date_debut_encheres,date_fin_encheres,res.getString("etat_vente"),res.getInt("prix_initial"),res.getInt("prix_vente"),res.getString("photo"),null,null,null,null);
+				
 				
 				UtilisateursDAO daoUtilisateur=(UtilisateursDAO) DAOFactory.getDAOUtilisateur();
 				Utilisateur utilisateur = daoUtilisateur.selectById(res.getInt("no_utilisateur"));
@@ -131,7 +131,8 @@ public class ArticleVenduDAOSqlServerlmpl implements ArticleVenduDAO {
 			while(res.next()) {
 				 LocalDateTime date_debut_encheres = res.getDate("date_debut_encheres").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
 				 LocalDateTime date_fin_encheres = res.getDate("date_fin_encheres").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-				 ArticleVendu articlevendu = new ArticleVendu(res.getInt("no_article"),res.getString("nom_article"),res.getString("description"),date_debut_encheres,date_fin_encheres,res.getString("etat_vente"),res.getInt("prix_initial"),res.getInt("prix_vente"),res.getString("photo"),null,null,null,null);				
+				 ArticleVendu articlevendu = new ArticleVendu(res.getInt("no_article"),res.getString("nom_article"),res.getString("description"),date_debut_encheres,date_fin_encheres,res.getString("etat_vente"),res.getInt("prix_initial"),res.getInt("prix_vente"),res.getString("photo"),null,null,null,null);
+				
 				
 				UtilisateursDAO daoUtilisateur=(UtilisateursDAO) DAOFactory.getDAOUtilisateur();
 				Utilisateur utilisateur = daoUtilisateur.selectById(res.getInt("no_utilisateur"));
@@ -180,7 +181,8 @@ public class ArticleVenduDAOSqlServerlmpl implements ArticleVenduDAO {
 			while(res.next()) {
 				 LocalDateTime date_debut_encheres = res.getDate("date_debut_encheres").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
 				 LocalDateTime date_fin_encheres = res.getDate("date_fin_encheres").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-				 ArticleVendu articlevendu = new ArticleVendu(res.getInt("no_article"),res.getString("nom_article"),res.getString("description"),date_debut_encheres,date_fin_encheres,res.getString("etat_vente"),res.getInt("prix_initial"),res.getInt("prix_vente"),res.getString("photo"),null,null,null,null);				
+				 ArticleVendu articlevendu = new ArticleVendu(res.getInt("no_article"),res.getString("nom_article"),res.getString("description"),date_debut_encheres,date_fin_encheres,res.getString("etat_vente"),res.getInt("prix_initial"),res.getInt("prix_vente"),res.getString("photo"),null,null,null,null);
+				
 				
 				UtilisateursDAO daoUtilisateur=(UtilisateursDAO) DAOFactory.getDAOUtilisateur();
 				Utilisateur utilisateure = daoUtilisateur.selectById(res.getInt("no_utilisateur"));
@@ -228,7 +230,8 @@ ArrayList<ArticleVendu> articles =new ArrayList<ArticleVendu>();
 			while(res.next()) {
 				 LocalDateTime date_debut_encheres = res.getDate("date_debut_encheres").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
 				 LocalDateTime date_fin_encheres = res.getDate("date_fin_encheres").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-				 ArticleVendu articlevendu = new ArticleVendu(res.getInt("no_article"),res.getString("nom_article"),res.getString("description"),date_debut_encheres,date_fin_encheres,res.getString("etat_vente"),res.getInt("prix_initial"),res.getInt("prix_vente"),res.getString("photo"),null,null,null,null);				
+				 ArticleVendu articlevendu = new ArticleVendu(res.getInt("no_article"),res.getString("nom_article"),res.getString("description"),date_debut_encheres,date_fin_encheres,res.getString("etat_vente"),res.getInt("prix_initial"),res.getInt("prix_vente"),res.getString("photo"),null,null,null,null);
+				
 				
 				UtilisateursDAO daoUtilisateur=(UtilisateursDAO) DAOFactory.getDAOUtilisateur();
 				Utilisateur utilisateur = daoUtilisateur.selectById(res.getInt("no_utilisateur"));
@@ -285,10 +288,10 @@ ArrayList<ArticleVendu> articles =new ArrayList<ArticleVendu>();
 			PreparedStatement stmt = conn.prepareStatement(UPDATE);
 			stmt.setString(1, article.getNomArticle());
 			stmt.setString(2, article.getDescription());
-			Timestamp date1 = Timestamp.valueOf(article.getDateDebutEncheres());
-			stmt.setTimestamp(3, date1);
-			Timestamp date2 = Timestamp.valueOf(article.getDateFinEncheres());
-			stmt.setTimestamp(4,date2);
+			 Date date1 = Date.from(article.getDateDebutEncheres().atZone(ZoneId.systemDefault()).toInstant());
+			stmt.setDate(3, (java.sql.Date) date1);
+			 Date date2 = Date.from(article.getDateFinEncheres().atZone(ZoneId.systemDefault()).toInstant());
+			stmt.setDate(4, (java.sql.Date) date2);
 			stmt.setInt(5, article.getMiseAPrix());
 			stmt.setInt(6, article.getPrixDeVente());
 			stmt.setInt(7, article.getUtilisateur().getNoUtilisateur());
@@ -326,7 +329,8 @@ ArrayList<ArticleVendu> articles =new ArrayList<ArticleVendu>();
 			while(res.next()) {
 				 LocalDateTime date_debut_encheres = res.getDate("date_debut_encheres").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
 				 LocalDateTime date_fin_encheres = res.getDate("date_fin_encheres").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-				 ArticleVendu articlevendu = new ArticleVendu(res.getInt("no_article"),res.getString("nom_article"),res.getString("description"),date_debut_encheres,date_fin_encheres,res.getString("etat_vente"),res.getInt("prix_initial"),res.getInt("prix_vente"),res.getString("photo"),null,null,null,null);				
+				 ArticleVendu articlevendu = new ArticleVendu(res.getInt("no_article"),res.getString("nom_article"),res.getString("description"),date_debut_encheres,date_fin_encheres,res.getString("etat_vente"),res.getInt("prix_initial"),res.getInt("prix_vente"),res.getString("photo"),null,null,null,null);
+				
 				
 				UtilisateursDAO daoUtilisateur=(UtilisateursDAO) DAOFactory.getDAOUtilisateur();
 				Utilisateur utilisateur = daoUtilisateur.selectById(res.getInt("no_utilisateur"));
@@ -374,7 +378,8 @@ ArrayList<ArticleVendu> articles =new ArrayList<ArticleVendu>();
 			while(res.next()) {
 				 LocalDateTime date_debut_encheres = res.getDate("date_debut_encheres").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
 				 LocalDateTime date_fin_encheres = res.getDate("date_fin_encheres").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-				 ArticleVendu articlevendu = new ArticleVendu(res.getInt("no_article"),res.getString("nom_article"),res.getString("description"),date_debut_encheres,date_fin_encheres,res.getString("etat_vente"),res.getInt("prix_initial"),res.getInt("prix_vente"),res.getString("photo"),null,null,null,null);				
+				 ArticleVendu articlevendu = new ArticleVendu(res.getInt("no_article"),res.getString("nom_article"),res.getString("description"),date_debut_encheres,date_fin_encheres,res.getString("etat_vente"),res.getInt("prix_initial"),res.getInt("prix_vente"),res.getString("photo"),null,null,null,null);
+				
 				
 				UtilisateursDAO daoUtilisateur=(UtilisateursDAO) DAOFactory.getDAOUtilisateur();
 				Utilisateur utilisateur = daoUtilisateur.selectById(res.getInt("no_utilisateur"));
@@ -389,10 +394,12 @@ ArrayList<ArticleVendu> articles =new ArrayList<ArticleVendu>();
 					Retrait retrait = daoRetrait.selectById(res.getInt("no_retrait"));
 					articlevendu.setLieuRetrait(retrait);
 				}
+				
 				if(res.getInt("no_gagnant")>=0) {
 					Utilisateur utilisateurGagnant = daoUtilisateur.selectById(res.getInt("no_gagnant"));
 					articlevendu.setGagnant(utilisateurGagnant);
 				}
+				
 				articles.add(articlevendu);
 			}
 			
@@ -509,7 +516,8 @@ ArrayList<ArticleVendu> articles =new ArrayList<ArticleVendu>();
 			while(res.next()) {
 				 LocalDateTime date_debut_encheres = res.getDate("date_debut_encheres").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
 				 LocalDateTime date_fin_encheres = res.getDate("date_fin_encheres").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-				 ArticleVendu articlevendu = new ArticleVendu(res.getInt("no_article"),res.getString("nom_article"),res.getString("description"),date_debut_encheres,date_fin_encheres,res.getString("etat_vente"),res.getInt("prix_initial"),res.getInt("prix_vente"),res.getString("photo"),null,null,null,null);				
+				 ArticleVendu articlevendu = new ArticleVendu(res.getInt("no_article"),res.getString("nom_article"),res.getString("description"),date_debut_encheres,date_fin_encheres,res.getString("etat_vente"),res.getInt("prix_initial"),res.getInt("prix_vente"),res.getString("photo"),null,null,null,null);
+				
 				
 				UtilisateursDAO daoUtilisateur=(UtilisateursDAO) DAOFactory.getDAOUtilisateur();
 				Utilisateur utilisateure = daoUtilisateur.selectById(res.getInt("no_utilisateur"));
@@ -523,6 +531,7 @@ ArrayList<ArticleVendu> articles =new ArrayList<ArticleVendu>();
 					Retrait retrait = daoRetrait.selectById(res.getInt("no_retrait"));
 					articlevendu.setLieuRetrait(retrait);
 				}
+				
 				if(res.getInt("no_gagnant")>=0) {
 					Utilisateur utilisateurGagnant = daoUtilisateur.selectById(res.getInt("no_gagnant"));
 					articlevendu.setGagnant(utilisateurGagnant);

@@ -4,9 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.sql.Date;
+import java.util.Date;
 
 import fr.eni.ProjetJee.bo.ArticleVendu;
 import fr.eni.ProjetJee.bo.Categorie;
@@ -43,10 +42,10 @@ public class ArticleVenduDAOSqlServerlmpl implements ArticleVenduDAO {
 			PreparedStatement stmt = conn.prepareStatement(INSERT, PreparedStatement.RETURN_GENERATED_KEYS);
 			stmt.setString(1, article.getNomArticle());
 			stmt.setString(2, article.getDescription());
-			Timestamp date1 = Timestamp.valueOf(article.getDateDebutEncheres());
-			stmt.setTimestamp(3, date1);
-			Timestamp date2 = Timestamp.valueOf(article.getDateFinEncheres());
-			stmt.setTimestamp(4,date2);
+			 Date date1 = Date.from(article.getDateDebutEncheres().atZone(ZoneId.systemDefault()).toInstant());
+			stmt.setDate(3, (java.sql.Date) date1);
+			 Date date2 = Date.from(article.getDateFinEncheres().atZone(ZoneId.systemDefault()).toInstant());
+			stmt.setDate(4, (java.sql.Date) date2);
 			stmt.setInt(5, article.getMiseAPrix());
 			stmt.setInt(6, article.getPrixDeVente());
 			stmt.setInt(7, article.getUtilisateur().getNoUtilisateur());
@@ -285,10 +284,10 @@ ArrayList<ArticleVendu> articles =new ArrayList<ArticleVendu>();
 			PreparedStatement stmt = conn.prepareStatement(UPDATE);
 			stmt.setString(1, article.getNomArticle());
 			stmt.setString(2, article.getDescription());
-			Timestamp date1 = Timestamp.valueOf(article.getDateDebutEncheres());
-			stmt.setTimestamp(3, date1);
-			Timestamp date2 = Timestamp.valueOf(article.getDateFinEncheres());
-			stmt.setTimestamp(4,date2);
+			 Date date1 = Date.from(article.getDateDebutEncheres().atZone(ZoneId.systemDefault()).toInstant());
+			stmt.setDate(3, (java.sql.Date) date1);
+			 Date date2 = Date.from(article.getDateFinEncheres().atZone(ZoneId.systemDefault()).toInstant());
+			stmt.setDate(4, (java.sql.Date) date2);
 			stmt.setInt(5, article.getMiseAPrix());
 			stmt.setInt(6, article.getPrixDeVente());
 			stmt.setInt(7, article.getUtilisateur().getNoUtilisateur());
@@ -383,7 +382,6 @@ ArrayList<ArticleVendu> articles =new ArrayList<ArticleVendu>();
 				CategorieDAO daoCategorie=(CategorieDAO) DAOFactory.getDAOCategorie();
 				Categorie categoriee = daoCategorie.selectById(res.getInt("no_categorie"));
 				articlevendu.setCategorie(categoriee);
-				
 				if(res.getInt("no_retrait")>=0) {
 					RetraitDAO daoRetrait=(RetraitDAO) DAOFactory.getDAORetrait();
 					Retrait retrait = daoRetrait.selectById(res.getInt("no_retrait"));
@@ -407,53 +405,44 @@ ArrayList<ArticleVendu> articles =new ArrayList<ArticleVendu>();
 		return articles;
 	}
 
+	
+	
 	@Override
 	public ArrayList<ArticleVendu> selectByRecherche(int categorie, String name, Utilisateur utilisateur,
 			String checkbox, String ouvertes, String mesEnchere, String mesEnchereReporter, String mesVenteCours,
 			String mesVenteDebutees, String mesVentetTerminees) throws DALException {
 		
-ArrayList<ArticleVendu> articles =new ArrayList<ArticleVendu>();
+			ArrayList<ArticleVendu> articles =new ArrayList<ArticleVendu>();
 		
 		try(Connection conn = ConnectionProvider.getConnection();) {
-			String requete ="SELECT * FROM ARTICLES_VENDUS INNER JOIN UTILISATEURS ON ARTICLES_VENDUS.no_utilisateur = UTILISATEURS.no_utilisateur";
+			String requete ="SELECT * FROM ARTICLES_VENDUS INNER JOIN UTILISATEURS ON ARTICLES_VENDUS.no_utilisateur = UTILISATEURS.no_utilisateur ";
 			PreparedStatement stmt=null;
 			int nb=1;
 			if(checkbox.equals("achat")) {
 				if(mesEnchere!=null){
-					requete=requete+"INNER JOIN ENCHERES"
-								   +"ON ARTICLES_VENDUS.no_article = ENCHERES.no_article"
-								   +"WHERE (etat_vente = 'En cours' "
-								   +"AND ENCHERES.no_utilisateur = ?)";
-					stmt = conn.prepareStatement(requete);
-					stmt.setInt(nb, utilisateur.getNoUtilisateur());
-					nb++;
+					requete=requete+"INNER JOIN ENCHERES "
+								   +"ON ARTICLES_VENDUS.no_article = ENCHERES.no_article "
+								   +"WHERE (etat_vente = 'En cours' AND ENCHERES.no_utilisateur = ?) ";
 				}
 				if(mesEnchereReporter!=null){
 					if(mesEnchere!=null) {
-						requete=requete+"OR (etat_vente = 'Enchères terminées' AND no_gagnant = ? )";
+						requete=requete+"OR (etat_vente = 'Enchères terminées' AND no_gagnant = ? ) ";
 								
 					}else {
-						requete=requete+"WHERE (etat_vente = 'Enchères terminées' AND no_gagnant = ?)";
+						requete=requete+"WHERE (etat_vente = 'Enchères terminées' AND no_gagnant = ?) ";
 								
 					}
-					stmt = conn.prepareStatement(requete);
-					stmt.setInt(nb, utilisateur.getNoUtilisateur());
-					nb++;
 				}
 				
 				if(ouvertes!=null){
 					if(mesEnchere!=null||mesEnchereReporter!=null) {
-						requete=requete+"OR (etat_vente = 'En cours')";
+						requete=requete+"OR (etat_vente = 'En cours') ";
 					}else {
-						requete=requete+"WHERE (etat_vente = 'En cours')";
+						requete=requete+"WHERE (etat_vente = 'En cours') ";
 					}
-							
 				}
 			}else {
-				requete=requete+"WHERE ARTICLES_VENDUS.no_utilisateur = ?";
-				 stmt = conn.prepareStatement(requete);
-				 stmt.setInt(nb, utilisateur.getNoUtilisateur());
-				 nb++;
+				requete=requete+"WHERE ARTICLES_VENDUS.no_utilisateur = ? ";
 				if(mesVenteCours!=null){
 					
 					requete=requete+"AND etat_vente = 'En cours' ";
@@ -478,38 +467,55 @@ ArrayList<ArticleVendu> articles =new ArrayList<ArticleVendu>();
 			}
 			if(categorie!=0) {
 				if(checkbox.equals("vente") || mesEnchere!=null||mesEnchereReporter!=null ||ouvertes!=null) {
-					requete=requete+"AND no_categorie = ?";
+					requete=requete+"AND no_categorie = ? ";
 				}
 				else {
-					requete=requete+"WHERE no_categorie = ?";
+					requete=requete+"WHERE no_categorie = ? ";
 				}
-				
-				stmt = conn.prepareStatement(requete);
-				stmt.setInt(nb, categorie);
-				nb++;
 			}
 			
 			if(name!=null){
 				if(checkbox.equals("vente") || categorie==0 ||mesEnchere!=null||mesEnchereReporter!=null ||ouvertes!=null) {
-					requete=requete+"AND nom_article LIKE ?";
+					requete=requete+"AND nom_article LIKE ? ";
 				}
 				else {
-					requete=requete+"WHERE nom_article LIKE ?";
+					requete=requete+"WHERE nom_article LIKE ? ";
 				}
-				stmt = conn.prepareStatement(requete);
-				 stmt.setString(nb, "%"+name+"%");
-				 nb++;
 			}
 			 
-			 requete=requete+"ORDER BY date_debut_encheres";
+			 requete=requete+"ORDER BY date_debut_encheres ;";
 			//Executer la requete
+			 stmt = conn.prepareStatement(requete);
+			 if(checkbox.equals("achat")) {
+					if(mesEnchere!=null){
+						stmt.setInt(nb, utilisateur.getNoUtilisateur());
+						nb++;
+					}
+					if(mesEnchereReporter!=null){
+						stmt.setInt(nb, utilisateur.getNoUtilisateur());
+						nb++;
+					}
+				}else {
+					 stmt.setInt(nb, utilisateur.getNoUtilisateur());
+					 nb++;
+				}
+				if(categorie!=0) {
+					stmt.setInt(nb, categorie);
+					nb++;
+				}
+				
+				if(name!=null){
+					 stmt.setString(nb, "%"+name+"%");
+					 nb++;
+				}
 			ResultSet res= stmt.executeQuery();
 			
 			//Recupérer l'identifiant créé
 			while(res.next()) {
 				 LocalDateTime date_debut_encheres = res.getDate("date_debut_encheres").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
 				 LocalDateTime date_fin_encheres = res.getDate("date_fin_encheres").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-				 ArticleVendu articlevendu = new ArticleVendu(res.getInt("no_article"),res.getString("nom_article"),res.getString("description"),date_debut_encheres,date_fin_encheres,res.getString("etat_vente"),res.getInt("prix_initial"),res.getInt("prix_vente"),res.getString("photo"),null,null,null,null);				
+				 ArticleVendu articlevendu = new ArticleVendu(res.getInt("no_article"),res.getString("nom_article"),res.getString("description"),date_debut_encheres,date_fin_encheres,res.getString("etat_vente"),res.getInt("prix_initial"),res.getInt("prix_vente"),res.getString("photo"),null,null,null,null);
+				
 				
 				UtilisateursDAO daoUtilisateur=(UtilisateursDAO) DAOFactory.getDAOUtilisateur();
 				Utilisateur utilisateure = daoUtilisateur.selectById(res.getInt("no_utilisateur"));
@@ -523,6 +529,7 @@ ArrayList<ArticleVendu> articles =new ArrayList<ArticleVendu>();
 					Retrait retrait = daoRetrait.selectById(res.getInt("no_retrait"));
 					articlevendu.setLieuRetrait(retrait);
 				}
+				
 				if(res.getInt("no_gagnant")>=0) {
 					Utilisateur utilisateurGagnant = daoUtilisateur.selectById(res.getInt("no_gagnant"));
 					articlevendu.setGagnant(utilisateurGagnant);
@@ -541,6 +548,7 @@ ArrayList<ArticleVendu> articles =new ArrayList<ArticleVendu>();
 		return articles;
 		
 	}
+
 
 	
 

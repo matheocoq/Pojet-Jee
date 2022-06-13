@@ -88,8 +88,7 @@ public class NouvelleVenteServlet extends HttpServlet {
 				
 				if ("".equals(article) || "".equals(description) || "".equals(dateDebut) || "".equals(dateFin) || "".equals(rue) || "".equals(codePostal) || "".equals(ville)) {
 					System.err.println("Un ou plusieur champ innatendu !!");
-					request.setAttribute("nouvelleVenteError", true);
-					request.getRequestDispatcher("/WEB-INF/pages/nouvelleVente.jsp").forward(request, response);
+					response.sendRedirect("/Projet_ENI-Encheres/NouvelleVente");
 					return;
 				}
 				
@@ -115,8 +114,7 @@ public class NouvelleVenteServlet extends HttpServlet {
 			}
 		} catch (NumberFormatException e) {
 			System.err.println("Le prix attendu ou la catégorie est incorrect !!");
-			request.setAttribute("nouvelleVenteError", true);
-			request.getRequestDispatcher("/WEB-INF/pages/nouvelleVente.jsp").forward(request, response);
+			response.sendRedirect("/Projet_ENI-Encheres/NouvelleVente");
 		}
 	}
 

@@ -15,7 +15,6 @@
 		<div class="col-9">
 		
 			<h5 style="text-align: center">Nouvelle vente</h5>
-			${not empty nouvelleVenteError ? "<div class='alert alert-danger mt-3 mb-3' role='alert'>Un ou plusieurs champs incorrect !!</div>" : null}
 			<form action="" method="post">
 				<div class="form-group mt-3">
 					<label for="article">Article</label>
